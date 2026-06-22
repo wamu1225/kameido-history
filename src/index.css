@@ -1,0 +1,60 @@
+:root {
+  /* 藍（indigo）× 朱（vermilion）× 金 × 和紙色 */
+  --ai: #27406a;
+  --ai-deep: #1b2e4d;
+  --ai-soft: #41608f;
+  --shu: #b34230;
+  --shu-soft: #c96a58;
+  --gold: #b08a2e;
+  --paper: #f6f1e6;
+  --paper-card: #fffdf8;
+  --ink: #2a2f3a;
+  --ink-soft: #555d6b;
+  --line: #e2dccb;
+  --tip-bg: #eef3f8;
+  --warn-bg: #fbf0ec;
+  --info-bg: #f4f1e6;
+
+  --maxw: 760px;
+  --radius: 12px;
+  --font: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', Meiryo, 'Noto Sans JP', system-ui, sans-serif;
+  --font-serif: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.85;
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { max-width: 100%; height: auto; }
+
+a { color: var(--ai); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 { line-height: 1.45; font-weight: 700; color: var(--ai-deep); }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ai);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 0 0 8px 0;
+  z-index: 100;
+}
+.skip-link:focus { left: 0; }
+
+:focus-visible { outline: 3px solid var(--ai-soft); outline-offset: 2px; }

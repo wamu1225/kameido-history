@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="亀戸のシンボル・亀">
+  <rect width="64" height="64" rx="12" fill="#27406a"/>
+  <!-- 亀（甲羅＋頭・脚）— 亀戸の地名「亀」を象徴 -->
+  <g fill="none" stroke="#f3ead2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 甲羅 -->
+    <path d="M22 38 C20 27 26 21 32 21 C38 21 44 27 42 38 C40 44 36 46 32 46 C28 46 24 44 22 38 Z" fill="#3f5e8c"/>
+    <!-- 甲羅の亀甲文（六角） -->
+    <path d="M32 27 L36 29.5 L36 34 L32 36.5 L28 34 L28 29.5 Z" fill="#27406a" stroke="#cdb56a" stroke-width="1.6"/>
+    <!-- 頭 -->
+    <circle cx="32" cy="16.5" r="3.4" fill="#3f5e8c"/>
+    <!-- 四肢 -->
+    <path d="M22.5 31 L18 28.5"/>
+    <path d="M41.5 31 L46 28.5"/>
+    <path d="M24 44 L20.5 47.5"/>
+    <path d="M40 44 L43.5 47.5"/>
+  </g>
+</svg>
