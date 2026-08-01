@@ -27,7 +27,7 @@ export type Article = {
 const REF = {
   koto: { label: '江東区の地名の由来（亀戸ほか）', publisher: '江東区（公式）', url: 'https://www.city.koto.lg.jp/103020/bunkasports/bunka/joho/6379.html' },
   katori: { label: '亀戸香取神社｜御由緒・勝矢の故事', publisher: '亀戸香取神社（公式）', url: 'https://www.kameido-katori.com/' },
-  tenjin: { label: '御祭神・由緒｜亀戸天神社', publisher: '亀戸天神社（公式）', url: 'http://kameidotenjin.or.jp/about/' },
+  tenjin: { label: '御祭神・由緒｜亀戸天神社', publisher: '亀戸天神社（公式）', url: 'https://kameidotenjin-sha.jp/about/' },
   ja: { label: '江戸東京野菜「亀戸ダイコン」', publisher: 'JA東京中央会（東京の農業）', url: 'https://www.tokyo-ja.or.jp/farm/edo/03.php' },
   maff: { label: '達人レシピ 亀戸ダイコン（江戸東京野菜）', publisher: '農林水産省', url: 'https://www.maff.go.jp/j/pr/aff/2102/producer02.html' },
   funabashiya: { label: '船橋屋の沿革（くず餅の歴史）', publisher: '船橋屋（公式）', url: 'https://www.funabashiya.co.jp/aboutus/history.php' },
