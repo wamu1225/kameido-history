@@ -7,11 +7,11 @@ import { referencesHtml } from '../src/references.ts';
 import { sectionIconSvg } from '../src/section-icons.ts';
 import { tokenizeInline } from '../src/lib/inline.ts';
 import type { InlineToken } from '../src/lib/inline.ts';
+import { SITE_NAME, ABOUT_CONTENT, PRIVACY_CONTENT } from '../src/data/static-pages.ts';
 
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const INDEX_HTML_PATH = path.join(DIST_DIR, 'index.html');
 const BASE_URL = 'https://study-apps.com/kameido-history';
-const SITE_NAME = '亀戸の歴史と文化ガイド';
 const AI = '#27406a';
 const AI_DEEP = '#1b2e4d';
 const SHU = '#b34230';
@@ -340,33 +340,19 @@ function writeStaticPage(id: string, title: string, description: string, bodyHtm
   generatedCount++;
 }
 
-const sectionH2 = (t: string) => `<h2 style="font-size:1.3rem;color:${AI_DEEP};border-left:4px solid ${SHU};padding-left:12px;margin:32px 0 12px">${t}</h2>`;
-
-// App.tsx の ABOUT_CONTENT / PRIVACY_CONTENT と同一テキスト（2026-08-08・O-2-14で本文を完全同期）
+// SSOT（src/data/static-pages.ts）から本文を読む（2026-08-10・O-2-15＝App.tsxとの二重管理を解消）
 writeStaticPage(
   'about',
   'サイトについて',
   `${SITE_NAME}について。本サイトの目的と情報源、編集方針を説明します。`,
-  `<p>本サイト「${SITE_NAME}」は、東京・下町の亀戸（東京都江東区）の歴史と文化に興味を持った方が、ひととおりの基礎を確かめられるようにまとめたリファレンスサイトです。地名の由来、亀戸天神社と亀戸香取神社、江戸東京野菜の亀戸大根、船橋屋のくず餅、歌川広重の浮世絵に描かれた亀戸までを、やさしく紹介しています。</p>
-  ${sectionH2('編集・制作の方針')}
-  <p>本サイトの内容は、江東区・各神社・JA東京中央会・船橋屋・東京富士美術館などの公式／公的に公開されている情報を参照し、事実を確認したうえで、運営者が自分の言葉で再構成して解説しています。出典の文章をそのまま転載することはありません。</p>
-  <p>歴史にまつわる年代や由緒には、社伝・伝承によるものや、諸説あるものが含まれます。本サイトでは、確定した事実と伝承を区別し、断定を避ける形で紹介するよう努めています。内容に誤りや古くなった情報を見つけた場合は、お問い合わせを受けて随時見直します。</p>
-  ${sectionH2('お出かけの前に')}
-  <p>行事の日程や拝観の案内は変更されることがあります。実際にお出かけの際は、各神社・店舗の公式の最新情報をご確認ください。</p>
-  ${sectionH2('お問い合わせ')}
-  <p>ご質問・誤りのご指摘は<a href="https://forms.gle/ccMv7oKwz6ysDHBe6" target="_blank" rel="noopener noreferrer" style="color:${AI}">こちらのGoogleフォーム</a>からお願いします。</p>`
+  markdownToHtml(ABOUT_CONTENT)
 );
 
 writeStaticPage(
   'privacy',
   'プライバシーポリシー',
   `${SITE_NAME}のプライバシーポリシー。Cookie・アクセス解析・広告の使用について。`,
-  `${sectionH2('アクセス解析')}
-  <p>本サイトでは、サイトの利用状況を把握するために Google Analytics を使用しています。Google Analytics はクッキーを利用して匿名のトラフィックデータを収集します。収集される情報は匿名で、個人を特定するものではありません。</p>
-  ${sectionH2('広告について')}
-  <p>本サイトでは Google AdSense などの第三者配信の広告サービスを利用することがあります。広告配信事業者は、ユーザーの興味に応じた広告を表示するために クッキーを使用することがあります。Cookie を無効にする設定や、Google の広告設定により、パーソナライズ広告を無効にすることができます。</p>
-  ${sectionH2('免責事項')}
-  <p>本サイトの情報は可能な限り正確を期していますが、その完全性・正確性を保証するものではありません。歴史的な年代や伝承には諸説あります。本サイトの情報を利用したことにより生じた損害について、運営者は一切の責任を負いません。</p>`
+  markdownToHtml(PRIVACY_CONTENT)
 );
 
 // ── sitemap.xml ──

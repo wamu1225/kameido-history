@@ -8,10 +8,10 @@ import { referencesHtml } from './references';
 import { sectionIconSvg } from './section-icons';
 import { tokenizeInline } from './lib/inline';
 import type { InlineToken } from './lib/inline';
+import { SITE_NAME, ABOUT_CONTENT, PRIVACY_CONTENT } from './data/static-pages';
 import './App.css';
 
 const BASE = '/kameido-history';
-const SITE_NAME = '亀戸の歴史と文化ガイド';
 
 type GroupKey = Article['group'];
 const GROUP_ORDER: { key: GroupKey; icon: string; description: string }[] = [
@@ -364,34 +364,6 @@ function ArticlePage({ article }: { article: Article }) {
     </>
   );
 }
-
-const ABOUT_CONTENT = `本サイト「${SITE_NAME}」は、東京・下町の亀戸（東京都江東区）の歴史と文化に興味を持った方が、ひととおりの基礎を確かめられるようにまとめたリファレンスサイトです。地名の由来、亀戸天神社と亀戸香取神社、江戸東京野菜の亀戸大根、船橋屋のくず餅、歌川広重の浮世絵に描かれた亀戸までを、やさしく紹介しています。
-
-## 編集・制作の方針
-
-本サイトの内容は、江東区・各神社・JA東京中央会・船橋屋・東京富士美術館などの公式／公的に公開されている情報を参照し、事実を確認したうえで、運営者が自分の言葉で再構成して解説しています。出典の文章をそのまま転載することはありません。
-
-歴史にまつわる年代や由緒には、社伝・伝承によるものや、諸説あるものが含まれます。本サイトでは、確定した事実と伝承を区別し、断定を避ける形で紹介するよう努めています。内容に誤りや古くなった情報を見つけた場合は、お問い合わせを受けて随時見直します。
-
-## お出かけの前に
-
-行事の日程や拝観の案内は変更されることがあります。実際にお出かけの際は、各神社・店舗の公式の最新情報をご確認ください。
-
-## お問い合わせ
-
-ご質問・誤りのご指摘は[こちらのGoogleフォーム](https://forms.gle/ccMv7oKwz6ysDHBe6)からお願いします。`;
-
-const PRIVACY_CONTENT = `## アクセス解析
-
-本サイトでは、サイトの利用状況を把握するために Google Analytics を使用しています。Google Analytics はクッキーを利用して匿名のトラフィックデータを収集します。収集される情報は匿名で、個人を特定するものではありません。
-
-## 広告について
-
-本サイトでは Google AdSense などの第三者配信の広告サービスを利用することがあります。広告配信事業者は、ユーザーの興味に応じた広告を表示するためにクッキーを使用することがあります。Cookie を無効にする設定や、Google の広告設定により、パーソナライズ広告を無効にすることができます。
-
-## 免責事項
-
-本サイトの情報は可能な限り正確を期していますが、その完全性・正確性を保証するものではありません。歴史的な年代や伝承には諸説あります。本サイトの情報を利用したことにより生じた損害について、運営者は一切の責任を負いません。`;
 
 function About() {
   useEffect(() => { document.title = `サイトについて | ${SITE_NAME}`; window.scrollTo(0, 0); }, []);
