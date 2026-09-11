@@ -34,7 +34,7 @@ function nameOriginSvg(): string {
   const kamido =
     `<text x="48" y="58" font-size="30" font-weight="700" fill="${AI}" text-anchor="middle" font-family="serif">神戸</text>` +
     `<path d="M30 74 H66" stroke="${GOLD}" stroke-width="2" stroke-dasharray="4 3"/>` +
-    `<text x="48" y="88" font-size="10" fill="${INK}" text-anchor="middle">かみど → かめいど</text>`;
+    `<text x="48" y="88" font-size="11" fill="${INK}" text-anchor="middle">かみど → かめいど</text>`;
   return (
     `<svg class="diagram-single" viewBox="0 0 300 126" width="100%" role="img" aria-label="亀戸の地名の三つの説（亀の島・亀ヶ井・神戸の転訛）の図">` +
     `<rect width="300" height="126" fill="${BG}"/>` +
@@ -50,8 +50,8 @@ function tenjinFoundingSvg(): string {
   const node = (x: number, year: string, label: string, color: string) =>
     `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
     `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="9.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="9.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
   return (
     `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸天神社の創建の流れの図">` +
     `<rect width="300" height="110" fill="${BG}"/>` +
@@ -74,7 +74,7 @@ function taikobashiSvg(): string {
     // スカイツリー（奥）
     `<path d="M236 30 L242 110 L230 110 Z" fill="#9fb4c6"/>` +
     `<line x1="239" y1="14" x2="239" y2="30" stroke="#9fb4c6" stroke-width="2"/>` +
-    `<text x="239" y="124" font-size="8.5" fill="#6d8298" text-anchor="middle">スカイツリー</text>` +
+    `<text x="239" y="24" font-size="10.5" fill="#6d8298" text-anchor="middle">スカイツリー</text>` +
     // 心字池（水面）
     `<rect x="0" y="120" width="300" height="60" fill="#bcd6e8"/>` +
     `<path d="M0 120 H300" stroke="#9bbdd4" stroke-width="2"/>` +
@@ -89,7 +89,7 @@ function taikobashiSvg(): string {
     // 藤棚（手前左右に垂れる藤）
     `${[18, 34, 50, 66].map(x => `<line x1="${x}" y1="40" x2="${x}" y2="92" stroke="#9b86c4" stroke-width="3"/>` + `${[48, 62, 76].map(y => `<circle cx="${x}" cy="${y}" r="3" fill="#7e63b4"/>`).join('')}`).join('')}` +
     `<line x1="10" y1="40" x2="76" y2="40" stroke="#6e7d4a" stroke-width="3"/>` +
-    `<text x="150" y="172" font-size="10" fill="${AI_DEEP}" text-anchor="middle">太鼓橋・藤・心字池の向こうにスカイツリー</text>` +
+    `<text x="150" y="172" font-size="11" fill="${AI_DEEP}" text-anchor="middle">太鼓橋・藤・心字池の向こうにスカイツリー</text>` +
     `</svg>`
   );
 }
@@ -107,7 +107,7 @@ function daikonShapeSvg(): string {
     // 首の色
     `<path d="M${cx - 11} 44 Q${cx} 50 ${cx + 11} 44" fill="none" stroke="${neck}" stroke-width="4"/>` +
     `<text x="${cx}" y="${52 + len}" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${label}</text>` +
-    `<text x="${cx}" y="${64 + len}" font-size="9" fill="${INK}" text-anchor="middle">${sub}</text>` +
+    `<text x="${cx}" y="${64 + len}" font-size="10.5" fill="${INK}" text-anchor="middle">${sub}</text>` +
     `</g>`;
   return (
     `<svg class="diagram-single" viewBox="0 0 300 150" width="100%" role="img" aria-label="亀戸大根と一般的な大根の形の比較図">` +
@@ -126,12 +126,12 @@ function kuzumochiProcessSvg(): string {
     `<g transform="translate(${x} 0)">` +
     `<rect x="6" y="20" width="58" height="58" rx="8" fill="#ffffff" stroke="${AI}" stroke-width="1.5"/>` +
     draw +
-    `<text x="35" y="92" font-size="9" font-weight="600" fill="${AI_DEEP}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="35" y="103" font-size="9" font-weight="600" fill="${AI_DEEP}" text-anchor="middle">${label.split('|')[1]}</text>` : '') +
+    `<text x="35" y="92" font-size="10.5" font-weight="600" fill="${AI_DEEP}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="35" y="103" font-size="10.5" font-weight="600" fill="${AI_DEEP}" text-anchor="middle">${label.split('|')[1]}</text>` : '') +
     `</g>`;
   const arrow = (x: number) => `<path d="M${x} 49 h12" stroke="${SHU}" stroke-width="2.4"/><path d="M${x + 12} 49 l-5 -3 M${x + 12} 49 l-5 3" stroke="${SHU}" stroke-width="2.4" fill="none"/>`;
   const wheat = `<path d="M35 34 V64" stroke="#caa84e" stroke-width="2"/>${[40, 48, 56].map(y => `<path d="M35 ${y} q-7 -3 -9 -9 M35 ${y} q7 -3 9 -9" stroke="#caa84e" stroke-width="2" fill="none"/>`).join('')}`;
-  const ferment = `<path d="M22 40 h26 v22 a13 7 0 0 1 -26 0 Z" fill="#f0ead4" stroke="#b9b083" stroke-width="1.5"/>${[28, 36, 44].map((x, i) => `<circle cx="${x}" cy="${52 + (i % 2) * 4}" r="2" fill="#9fb36a"/>`).join('')}<text x="35" y="74" font-size="7" fill="#7e8a55" text-anchor="middle">乳酸菌</text>`;
+  const ferment = `<path d="M22 40 h26 v22 a13 7 0 0 1 -26 0 Z" fill="#f0ead4" stroke="#b9b083" stroke-width="1.5"/>${[28, 36, 44].map((x, i) => `<circle cx="${x}" cy="${52 + (i % 2) * 4}" r="2" fill="#9fb36a"/>`).join('')}<text x="35" y="34" font-size="10.5" fill="#7e8a55" text-anchor="middle">乳酸菌</text>`;
   const steam = `<path d="M22 58 h26 v6 h-26 Z" fill="#b98a5e"/><path d="M24 50 h22 v8 h-22 Z" fill="#d8b487" stroke="#b98a5e" stroke-width="1"/>${[30, 38].map(x => `<path d="M${x} 46 q-3 -4 0 -8" stroke="#b8c4cc" stroke-width="1.6" fill="none"/>`).join('')}`;
   const serve = `<path d="M22 60 q13 8 26 0" fill="none" stroke="#b9b083" stroke-width="1.5"/><path d="M24 50 h22 l-3 12 h-16 Z" fill="#efe6cf" stroke="#cfc7a8" stroke-width="1"/><path d="M28 52 q7 4 14 0" stroke="#5a3a1a" stroke-width="2" fill="none"/><circle cx="32" cy="48" r="1.6" fill="#caa84e"/><circle cx="40" cy="49" r="1.6" fill="#caa84e"/>`;
   return (
@@ -165,7 +165,7 @@ function umeyashikiSvg(): string {
     `<path d="M210 74 Q230 50 226 26" fill="none" stroke="#3a2a20" stroke-width="6" stroke-linecap="round"/>` +
     // 白梅の花
     `${[[140, 44], [150, 60], [224, 30], [236, 46], [60, 132], [110, 104], [250, 66], [180, 84]].map(([x, y]) => `<g><circle cx="${x}" cy="${y}" r="4" fill="#fff"/><circle cx="${x}" cy="${y}" r="1.5" fill="${GOLD}"/></g>`).join('')}` +
-    `<text x="150" y="163" font-size="10" fill="${AI_DEEP}" text-anchor="middle">手前に梅の太枝を大きく、すき間から梅林と梅見の人々</text>` +
+    `<text x="150" y="163" font-size="11" fill="${AI_DEEP}" text-anchor="middle">手前に梅の太枝を大きく、すき間から梅林と梅見の人々</text>` +
     `</svg>`
   );
 }
