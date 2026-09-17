@@ -19,6 +19,7 @@ const GROUP_ORDER: { key: GroupKey; icon: string; description: string }[] = [
   { key: '信仰', icon: 'landmark', description: '「武」の香取神社と「文」の天神社、二つの社' },
   { key: '名物', icon: 'utensils', description: '亀戸大根と船橋屋のくず餅、下町の味' },
   { key: '文化', icon: 'image', description: '広重の浮世絵に描かれた亀戸の風景' },
+  { key: '近代', icon: 'factory', description: '時計の街、亀戸事件、空襲——江戸の名所が今の姿になった理由' },
   { key: 'めぐる', icon: 'map', description: '見どころのめぐり方と、よくある疑問' },
 ];
 

@@ -170,6 +170,48 @@ function umeyashikiSvg(): string {
   );
 }
 
+// 7) 時計の街の年表（1939 竣工 → 1993 移転 → 1997 サンストリート → 2022 カメイドクロック）
+function tokeiMachiTimelineSvg(): string {
+  const node = (x: number, year: string, label: string, color: string) =>
+    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
+    `<text x="${x}" y="34" font-size="10.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
+    `<text x="${x}" y="80" font-size="10" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="10" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="第二精工舎からカメイドクロックまで、同じ土地の変遷の図">` +
+    `<rect width="300" height="110" fill="${BG}"/>` +
+    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
+    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
+    node(40, '1939', '第二精工舎|本社工場竣工', AI) +
+    node(125, '1993', '本社移転|(千葉・幕張)', SHU) +
+    node(200, '1997-2016', 'サンストリート|亀戸', GOLD) +
+    node(260, '2022', 'カメイド|クロック開業', AI) +
+    `</svg>`
+  );
+}
+
+// 8) 城東区＋深川区 → 江東区（1947年）の合成図
+function jotoKotoMergeSvg(): string {
+  const box = (x: number, w: number, title: string, sub: string, color: string) =>
+    `<g transform="translate(${x} 0)">` +
+    `<rect x="0" y="20" width="${w}" height="60" rx="6" fill="#ffffff" stroke="${color}" stroke-width="1.8"/>` +
+    `<text x="${w / 2}" y="46" font-size="13" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${title}</text>` +
+    `<text x="${w / 2}" y="64" font-size="10" fill="${INK}" text-anchor="middle">${sub}</text>` +
+    `</g>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="城東区と深川区が合併して江東区になった図">` +
+    `<rect width="300" height="110" fill="${BG}"/>` +
+    box(4, 92, '城東区', '1932〜｜亀戸町・大島町・砂町', SHU) +
+    `<text x="106" y="56" font-size="16" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">＋</text>` +
+    box(112, 92, '深川区', '1878〜', AI) +
+    `<path d="M212 50 h18" stroke="${GOLD}" stroke-width="2.4" marker-end="url(#jk-arrow)"/>` +
+    `<defs><marker id="jk-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="${GOLD}"/></marker></defs>` +
+    box(232, 64, '江東区', '1947年3月15日', GOLD) +
+    `<text x="150" y="98" font-size="10.5" fill="${INK}" text-anchor="middle">区名の「江」は深川、「東」は城東を表すとされる</text>` +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'name-origin': {
@@ -195,6 +237,14 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'umeyashiki-composition': {
     caption: '広重『亀戸梅屋舗』の構図（模式図）。画面の手前を横切るほど大きく梅の太い枝を配し、その枝のすき間から奥の梅林と梅見の人々をのぞかせる、遠近の常識をくつがえす大胆な近景構図です。',
     inner: `<div class="diagram-wrap">${umeyashikiSvg()}</div>`,
+  },
+  'tokei-machi-timeline': {
+    caption: '同じ土地の変遷（模式図）。1939年に竣工した第二精工舎の本社工場は、1993年の本社移転後も工場として使われ、跡地は1997年にサンストリート亀戸、2016年の閉館を経て2022年にカメイドクロックへと変わりました。',
+    inner: `<div class="diagram-wrap">${tokeiMachiTimelineSvg()}</div>`,
+  },
+  'joto-koto-merge': {
+    caption: '江東区の成立（模式図）。1932年に亀戸町・大島町・砂町から成立した城東区と、1878年からの深川区が、1947年3月15日に合併して江東区になりました。区名の「江」は深川、「東」は城東を表すとされます。',
+    inner: `<div class="diagram-wrap">${jotoKotoMergeSvg()}</div>`,
   },
 };
 
