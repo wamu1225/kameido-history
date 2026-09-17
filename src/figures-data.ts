@@ -174,9 +174,9 @@ function umeyashikiSvg(): string {
 function tokeiMachiTimelineSvg(): string {
   const node = (x: number, year: string, label: string, color: string) =>
     `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="10.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="10" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="10" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+    `<text x="${x}" y="34" font-size="11.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
+    `<text x="${x}" y="80" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
   return (
     `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="第二精工舎からカメイドクロックまで、同じ土地の変遷の図">` +
     `<rect width="300" height="110" fill="${BG}"/>` +
@@ -196,18 +196,18 @@ function jotoKotoMergeSvg(): string {
     `<g transform="translate(${x} 0)">` +
     `<rect x="0" y="20" width="${w}" height="60" rx="6" fill="#ffffff" stroke="${color}" stroke-width="1.8"/>` +
     `<text x="${w / 2}" y="46" font-size="13" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${title}</text>` +
-    `<text x="${w / 2}" y="64" font-size="10" fill="${INK}" text-anchor="middle">${sub}</text>` +
+    `<text x="${w / 2}" y="64" font-size="11" fill="${INK}" text-anchor="middle">${sub}</text>` +
     `</g>`;
   return (
     `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="城東区と深川区が合併して江東区になった図">` +
     `<rect width="300" height="110" fill="${BG}"/>` +
-    box(4, 92, '城東区', '1932〜｜亀戸町・大島町・砂町', SHU) +
+    box(4, 92, '城東区', '1932年成立', SHU) +
     `<text x="106" y="56" font-size="16" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">＋</text>` +
-    box(112, 92, '深川区', '1878〜', AI) +
+    box(112, 92, '深川区', '1878年〜', AI) +
     `<path d="M212 50 h18" stroke="${GOLD}" stroke-width="2.4" marker-end="url(#jk-arrow)"/>` +
     `<defs><marker id="jk-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="${GOLD}"/></marker></defs>` +
-    box(232, 64, '江東区', '1947年3月15日', GOLD) +
-    `<text x="150" y="98" font-size="10.5" fill="${INK}" text-anchor="middle">区名の「江」は深川、「東」は城東を表すとされる</text>` +
+    box(232, 64, '江東区', '1947年〜', GOLD) +
+    `<text x="150" y="98" font-size="11" fill="${INK}" text-anchor="middle">区名の「江」は深川、「東」は城東を表すとされる</text>` +
     `</svg>`
   );
 }
