@@ -24,6 +24,9 @@
   font-size: 1.05rem;
   font-family: var(--font-serif);
   letter-spacing: 0.02em;
+  /* ナビに押されてサイト名が4行に折り返していた（2026-09-18 実測）。潰させない */
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .site-brand:hover { text-decoration: none; opacity: 0.92; }
 .brand-logo { width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0; }
@@ -42,7 +45,8 @@
 .site-nav {
   margin-left: auto;
   display: flex;
-  flex-wrap: wrap;
+  /* 分野6つだけなので1行に収まる。折り返させない＝記事が増えても高さが変わらない */
+  flex-wrap: nowrap;
   gap: 2px;
 }
 .site-nav a {

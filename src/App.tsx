@@ -14,13 +14,16 @@ import './App.css';
 const BASE = '/kameido-history';
 
 type GroupKey = Article['group'];
-const GROUP_ORDER: { key: GroupKey; icon: string; description: string }[] = [
-  { key: '歴史', icon: 'scroll', description: '地名の由来から、町の歩みを年表でたどる' },
-  { key: '信仰', icon: 'landmark', description: '「武」の香取神社と「文」の天神社、二つの社' },
-  { key: '名物', icon: 'utensils', description: '亀戸大根と船橋屋のくず餅、下町の味' },
-  { key: '文化', icon: 'image', description: '広重の浮世絵に描かれた亀戸の風景' },
-  { key: '近代', icon: 'factory', description: '時計の街、亀戸事件、空襲——江戸の名所が今の姿になった理由' },
-  { key: 'めぐる', icon: 'map', description: '見どころのめぐり方と、よくある疑問' },
+// slug＝ヘッダーのナビからトップの各分野へ飛ぶためのアンカー。
+// ⚠️ ナビは分野（6つ）だけを並べる。記事を全部並べると、記事が増えるたびにヘッダーが伸びる
+// （2026-09-18 実測＝14記事で 144px・画面の18%・サイト名が4行に折り返した）。
+const GROUP_ORDER: { key: GroupKey; slug: string; icon: string; description: string }[] = [
+  { key: '歴史', slug: 'history', icon: 'scroll', description: '地名の由来から、町の歩みを年表でたどる' },
+  { key: '信仰', slug: 'faith', icon: 'landmark', description: '「武」の香取神社と「文」の天神社、二つの社' },
+  { key: '名物', slug: 'food', icon: 'utensils', description: '亀戸大根と船橋屋のくず餅、下町の味' },
+  { key: '文化', slug: 'culture', icon: 'image', description: '広重の浮世絵に描かれた亀戸の風景' },
+  { key: '近代', slug: 'modern', icon: 'factory', description: '時計の街、亀戸事件、空襲。江戸の名所が今の姿になった理由' },
+  { key: 'めぐる', slug: 'visit', icon: 'map', description: '見どころのめぐり方と、よくある疑問' },
 ];
 
 function SectionIcon({ name, size = 24 }: { name: string; size?: number }) {
@@ -194,10 +197,22 @@ function Header() {
           {navOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
         <nav className={`site-nav ${navOpen ? 'open' : ''}`} aria-label="メインナビゲーション">
-          {articles.map((a) => (
-            <a key={a.id} href={`${BASE}/${a.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); setNavOpen(false); }}>
-              <span className="nav-emoji"><SectionIcon name={a.icon} size={18} /></span>
-              <span>{a.shortTitle}</span>
+          {GROUP_ORDER.map((g) => (
+            <a
+              key={g.key}
+              href={`${BASE}/#g-${g.slug}`}
+              onClick={(e) => {
+                e.preventDefault();
+                setNavOpen(false);
+                navigateTo('/');
+                // トップへ移ってから該当の分野まで送る（同じ頁に居るときも動く）
+                requestAnimationFrame(() => {
+                  document.getElementById(`g-${g.slug}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+              }}
+            >
+              <span className="nav-emoji"><SectionIcon name={g.icon} size={18} /></span>
+              <span>{g.key}</span>
             </a>
           ))}
         </nav>
@@ -225,7 +240,7 @@ function Home() {
         const groupArticles = articles.filter((a) => a.group === group.key);
         if (groupArticles.length === 0) return null;
         return (
-          <div key={group.key} className="section-group">
+          <div key={group.key} id={`g-${group.slug}`} className="section-group">
             <div className="section-group-head">
               <h2 className="section-group-label">
                 <span className="section-group-emoji" aria-hidden="true"><SectionIcon name={group.icon} size={20} /></span>
