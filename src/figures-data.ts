@@ -231,6 +231,26 @@ function katoriShotengaiTimelineSvg(): string {
   );
 }
 
+// 10) 三代歌川豊国（国貞）の年表
+function toyokuniTimelineSvg(): string {
+  const node = (x: number, year: string, label: string, color: string) =>
+    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
+    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
+    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="三代歌川豊国（国貞）の年表の図">` +
+    `<rect width="300" height="110" fill="${BG}"/>` +
+    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
+    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
+    node(40, '1786', '本所で誕生|(のち亀戸に住む)', AI) +
+    node(125, '1844', '（実質）三代目|豊国を襲名', SHU) +
+    node(200, '1854', '広重と合作|「双筆五十三次」', GOLD) +
+    node(260, '1864', '没・亀戸の|光明寺に眠る', AI) +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'name-origin': {
@@ -268,6 +288,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'katori-shotengai-timeline': {
     caption: '亀戸香取勝運商店街の年表（模式図）。香取神社の参道が明治の頃から商店街として発展し、戦後もにぎわいを保ちましたが、平成23年（2011年）に看板建築で「昭和30年代」の街並みへとリニューアルされました。',
     inner: `<div class="diagram-wrap">${katoriShotengaiTimelineSvg()}</div>`,
+  },
+  'toyokuni-timeline': {
+    caption: '三代歌川豊国（国貞）の年表（模式図）。本所に生まれ、のち亀戸に住んで「亀戸豊国」と呼ばれました。1844年に（実質）三代目豊国を襲名し、1854年には広重と「双筆五十三次」を合作。1864年に没し、亀戸の光明寺に葬られました。',
+    inner: `<div class="diagram-wrap">${toyokuniTimelineSvg()}</div>`,
   },
 };
 
