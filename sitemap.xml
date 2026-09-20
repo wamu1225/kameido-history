@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://study-apps.com/kameido-history/</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -49,6 +49,12 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://study-apps.com/kameido-history/horumon/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://study-apps.com/kameido-history/ukiyoe/</loc>
     <lastmod>2026-09-19</lastmod>
     <changefreq>monthly</changefreq>
@@ -85,20 +91,26 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://study-apps.com/kameido-history/katori-shotengai/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://study-apps.com/kameido-history/faq/</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://study-apps.com/kameido-history/about/</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://study-apps.com/kameido-history/privacy/</loc>
-    <lastmod>2026-09-18</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
