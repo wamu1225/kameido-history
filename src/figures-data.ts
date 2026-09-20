@@ -212,6 +212,25 @@ function jotoKotoMergeSvg(): string {
   );
 }
 
+// 9) 香取勝運商店街の年表（参道 → 戦後の商店街 → 2011年の看板建築リニューアル）
+function katoriShotengaiTimelineSvg(): string {
+  const node = (x: number, year: string, label: string, color: string) =>
+    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
+    `<text x="${x}" y="34" font-size="11.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
+    `<text x="${x}" y="80" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸香取勝運商店街の年表（参道から昭和30年代を再現した街並みまで）の図">` +
+    `<rect width="300" height="110" fill="${BG}"/>` +
+    `<line x1="40" y1="54" x2="260" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
+    `<path d="M260 54 l-8 -4 M260 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
+    node(50, '明治', '香取神社の参道が|商店街へ発展', AI) +
+    node(150, '戦後', 'にぎわう|下町の商店街', SHU) +
+    node(250, '2011', '看板建築で|「昭和30年代」を再現', GOLD) +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'name-origin': {
@@ -245,6 +264,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'joto-koto-merge': {
     caption: '江東区の成立（模式図）。1932年に亀戸町・大島町・砂町から成立した城東区と、1878年からの深川区が、1947年3月15日に合併して江東区になりました。区名の「江」は深川、「東」は城東を表すとされます。',
     inner: `<div class="diagram-wrap">${jotoKotoMergeSvg()}</div>`,
+  },
+  'katori-shotengai-timeline': {
+    caption: '亀戸香取勝運商店街の年表（模式図）。香取神社の参道が明治の頃から商店街として発展し、戦後もにぎわいを保ちましたが、平成23年（2011年）に看板建築で「昭和30年代」の街並みへとリニューアルされました。',
+    inner: `<div class="diagram-wrap">${katoriShotengaiTimelineSvg()}</div>`,
   },
 };
 
