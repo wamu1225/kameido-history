@@ -271,6 +271,26 @@ function suijinguTimelineSvg(): string {
   );
 }
 
+// 12) 水運から鉄道への年表
+function kotsuTimelineSvg(): string {
+  const node = (x: number, year: string, label: string, color: string) =>
+    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
+    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
+    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸の水運から鉄道への年表の図">` +
+    `<rect width="300" height="110" fill="${BG}"/>` +
+    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
+    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
+    node(40, '1658頃', '横十間川など|運河の開削', AI) +
+    node(125, '1894', '総武鉄道|亀戸駅', SHU) +
+    node(200, '1904', '東武亀戸線|開業（本線格）', GOLD) +
+    node(260, '1910〜', '浅草駅開業で|支線化・水運衰退', AI) +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'name-origin': {
@@ -316,6 +336,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'suijingu-timeline': {
     caption: '亀戸水神宮の年表（模式図）。社伝では16世紀前半に水害よけの神を勧請したと伝わり、延宝年間（1673〜1681年）の古地図にも記載が確認されています。昭和20年（1945年）3月の東京大空襲で大きな被害を受けましたが、昭和35年（1960年）に再建されました。',
     inner: `<div class="diagram-wrap">${suijinguTimelineSvg()}</div>`,
+  },
+  'kotsu-timeline': {
+    caption: '亀戸の水運から鉄道への年表（模式図）。万治年間（1658年ごろ）に横十間川などの運河が開かれ、明治27年（1894年）には総武鉄道の亀戸駅が開業しました。明治37年（1904年）に東武亀戸線が本線格の路線として開業しましたが、明治43年（1910年）の浅草駅開業で支線となり、昭和に入ると水運も陸上輸送に押されて役割を終えていきました。',
+    inner: `<div class="diagram-wrap">${kotsuTimelineSvg()}</div>`,
   },
 };
 
