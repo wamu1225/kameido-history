@@ -291,6 +291,25 @@ function kotsuTimelineSvg(): string {
   );
 }
 
+// 13) 亀戸銭座の年表
+function zenizaTimelineSvg(): string {
+  const node = (x: number, year: string, label: string, color: string) =>
+    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
+    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
+    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
+    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸銭座の年表の図">` +
+    `<rect width="300" height="110" fill="${BG}"/>` +
+    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
+    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
+    node(40, '1671以前', '芝網縄手から|亀戸へ移転', AI) +
+    node(153, '1668〜83', '「文銭」を|鋳造', SHU) +
+    node(260, '1773', '廃止（安永2年）', GOLD) +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'name-origin': {
@@ -340,6 +359,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'kotsu-timeline': {
     caption: '亀戸の水運から鉄道への年表（模式図）。万治年間（1658年ごろ）に横十間川などの運河が開かれ、明治27年（1894年）には総武鉄道の亀戸駅が開業しました。明治37年（1904年）に東武亀戸線が本線格の路線として開業しましたが、明治43年（1910年）の浅草駅開業で支線となり、昭和に入ると水運も陸上輸送に押されて役割を終えていきました。',
     inner: `<div class="diagram-wrap">${kotsuTimelineSvg()}</div>`,
+  },
+  'zeniza-timeline': {
+    caption: '亀戸銭座の年表（模式図）。寛文11年（1671年）の江戸図にすでに記載があり、芝網縄手（現在の港区）から移転してきたと伝わります。寛文8年（1668年）から天和3年（1683年）には裏面に「文」の字を鋳込んだ寛永通宝「文銭」が鋳造されました。安永2年（1773年）に廃止されたと伝わります。',
+    inner: `<div class="diagram-wrap">${zenizaTimelineSvg()}</div>`,
   },
 };
 
