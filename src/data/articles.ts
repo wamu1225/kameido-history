@@ -35,15 +35,11 @@ const REF = {
   seikoDesign: { label: '1937年 第二精工舎（亀戸）設立', publisher: 'Seiko Design 140（セイコーウオッチ公式）', url: 'https://by.seiko-design.com/140th/topic/06.html' },
   siiHistory: { label: '会社沿革', publisher: 'セイコーインスツル株式会社（公式）', url: 'https://www.sii.co.jp/jp/corp/history/' },
   kameidoclockPress: { label: '「KAMEIDO CLOCK」2022年4月28日開業のお知らせ', publisher: '野村不動産ホールディングス（公式プレスリリース）', url: 'https://prtimes.jp/main/html/rd/p/000000362.000025694.html' },
-  kameidoJikenWiki: { label: '亀戸事件', publisher: 'Wikipedia', url: 'https://ja.wikipedia.org/wiki/%E4%BA%80%E6%88%B8%E4%BA%8B%E4%BB%B6' },
   soumuMemorial: { label: '江東区「昭和殉難者慰霊碑」（亀戸地区の戦災慰霊碑）', publisher: '総務省「一般戦災死没者の追悼」', url: 'https://www.soumu.go.jp/main_sosiki/daijinkanbou/sensai/virtual/memorialsite/tokyo_koto_city002/index.html' },
   jotoWiki: { label: '城東区 (東京都)', publisher: 'Wikipedia', url: 'https://ja.wikipedia.org/wiki/%E5%9F%8E%E6%9D%B1%E5%8C%BA_(%E6%9D%B1%E4%BA%AC%E9%83%BD)' },
-  kotoWiki: { label: '江東区（区の成立・区名の由来）', publisher: 'Wikipedia', url: 'https://ja.wikipedia.org/wiki/%E6%B1%9F%E6%9D%B1%E5%8C%BA' },
   kameidoMemorial: { label: '亀戸事件から102年 江東区内で追悼会', publisher: '日本共産党東京都委員会（活動記録）', url: 'https://www.jcp-tokyo.net/2025/0906/111905' },
-  zatsuneta: { label: '東京23区になった経緯と理由', publisher: '雑学ネタ帳', url: 'https://zatsuneta.com/archives/000839.html' },
   kotoKankoSengen: { label: '亀戸浅間神社（富士塚）', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00054' },
   kotoKankoRyugenji: { label: '龍眼寺（萩寺）', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00008' },
-  kameidoShichifukujinWiki: { label: '亀戸七福神', publisher: 'Wikipedia', url: 'https://ja.wikipedia.org/wiki/%E4%BA%80%E6%88%B8%E4%B8%83%E7%A6%8F%E7%A5%9E' },
   masumoto: { label: '亀戸升本 本店（創業・亀戸大根あさり鍋）', publisher: '亀戸升本（公式）', url: 'https://masumoto.co.jp/ja/honten/' },
   kameidoGyouza: { label: '亀戸ぎょうざ 本店', publisher: '亀戸ぎょうざ株式会社（公式）', url: 'https://www.kameido-gyouza.co.jp/' },
   kotoKankoUmeyashiki: { label: '亀戸梅屋敷（観光施設・開館年）', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00058' },
@@ -56,9 +52,7 @@ const REF = {
   kotoKankoJusangen: { label: '亀戸十三間通商店街', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00053' },
   kotoKankoTenjinDori: { label: '亀戸天神通り商店街', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00057' },
   kotoKankoGonohashi: { label: '五ノ橋豊国通り商店会', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00065' },
-  kuniyoshiWiki: { label: '歌川国貞', publisher: 'Wikipedia', url: 'https://ja.wikipedia.org/wiki/%E6%AD%8C%E5%B7%9D%E5%9B%BD%E8%B2%9E' },
   adachiToyokuni: { label: '三代歌川豊国（国貞）', publisher: '足立区立郷土博物館（公式）', url: 'https://www.city.adachi.tokyo.jp/hakubutsukan/chiikibunka/hakubutsukan/shiryo-3-toyokuni.html' },
-  kameidoSuijinWiki: { label: '亀戸水神社', publisher: 'Wikipedia', url: 'https://ja.wikipedia.org/wiki/%E4%BA%80%E6%88%B8%E6%B0%B4%E7%A5%9E%E7%A4%BE' },
   tesshowSuijin: { label: '亀戸水神宮', publisher: '郷土資料サイト（tesshow.jp・江東区の神社）', url: 'https://tesshow.jp/koto/shrine_kameido_suijin.html' },
   adomachiJusangen: { label: '亀戸十三間通商店街（2002年11月30日放送）', publisher: '出没！アド街ック天国（テレビ東京・番組公式バックナンバー）', url: 'https://www.tv-tokyo.co.jp/adomachi/backnumber/20021130/25024.html' },
   nimuraKameido: { label: '二村一夫「亀戸事件小論」（初出：法政大学大原社会問題研究所『資料室報』138号・1968年）', publisher: '法政大学大原社会問題研究所『二村一夫著作集』', url: 'http://nimura-laborhistory.jp/kameidojikenshoron.html' },
@@ -75,6 +69,7 @@ const REF = {
   komainuSuijin: { label: '亀戸水神宮（1938年建立の由来碑・当時の宮司の記述を含む）', publisher: '狛犬コレクション（「猫の足あと」の記録を引用）', url: 'http://www.komainu.org/tokyo/kunai/koutouku/KameidoSuizinguu/suizinguu.html' },
   kotoZeniza: { label: '亀戸銭座跡（設置年代・移転元・文銭の鋳造・廃止年）', publisher: '江東区（公式・文化財サイト）', url: 'https://www.city.koto.lg.jp/103020/bunkasports/bunka/bunkazaisiseki/shiseki/16093.html' },
   kotoKankoZeniza: { label: '亀戸銭座跡（所在地・アクセス）', publisher: '江東おでかけ情報局（江東区観光協会）', url: 'https://koto-kanko.jp/tourism/detail_spot.php?sid=S00055' },
+  soumuTokyo35ku: { label: '大東京35区物語｜15区から23区へ（35区→22区・1947年3月15日の告諭第1号）', publisher: '東京都総務局（公式・江戸東京を知る）', url: 'https://www.soumu.metro.tokyo.lg.jp/01soumu-archives/07edo_tokyo/0714tokyo_ku' },
 } as const;
 
 export const articles: Article[] = [
@@ -838,17 +833,17 @@ JA東京中央会の資料によれば、亀戸大根の栽培は**文久年間�
 
 ## 空襲の被害は、区の再編にもつながった
 
-戦災は、行政の仕組みにも影響を残しました。戦争で財政基盤が弱くなった区を立て直すため、昭和22年（1947年）3月、東京の35区は22区へ再編されます（同年8月にはさらに板橋区から練馬区が分かれ、現在の23区になりました）。[城東区が深川区と合併して江東区になった](/kameido-history/joto-koto/)のも、この年の再編の一つです。空襲の被害は、区の姿そのものを変えるきっかけの一つになりました。
+戦災は、行政の仕組みにも影響を残しました。東京都総務局の資料によれば、昭和22年（1947年）3月10日付の告諭第1号は、35区を22区へ再編する理由として「戦災によって各区の人口その他に甚だしい差異が生じたため、これを調整しないと復興その他の施策に支障があること」を挙げています。同年3月15日、東京の35区は22区へ再編されました（同年8月にはさらに板橋区から練馬区が分かれ、現在の23区になりました）。[城東区が深川区と合併して江東区になった](/kameido-history/joto-koto/)のも、この年の再編の一つです。空襲の被害は、区の姿そのものを変えるきっかけの一つになりました。
 
 ## まとめ
 
 - 昭和20年（1945年）3月10日の空襲で、隅田川両岸の下町地域は大きな被害を受け、旧城東区もその被害地域に含まれた
 - 城東区単独の被害統計は確認できていないため、断定的な数字は記載しない
 - 亀戸3丁目の「昭和殉難者慰霊碑」（1946年建立）が、当時の被害の具体的な記述を今に伝えている
-- 戦災で弱った区の財政を立て直すための1947年の区再編で、城東区は深川区と合併し江東区になった
+- 昭和22年（1947年）3月10日付の告諭第1号は、区の再編理由の一つに戦災による人口格差の是正を挙げている。城東区はこの年、深川区と合併し江東区になった
 `,
-    updatedAt: '2026-09-18',
-    references: [REF.soumuMemorial, REF.zatsuneta],
+    updatedAt: '2026-09-30',
+    references: [REF.soumuMemorial, REF.soumuTokyo35ku],
   },
 
   // ───────────────────────────── 近代4. 城東区から江東区へ ─────────────────────────────
@@ -873,16 +868,16 @@ JA東京中央会の資料によれば、亀戸大根の栽培は**文久年間�
 
 ## 単独の合併ではなく、東京全体の再編だった
 
-この年の再編は江東区だけの出来事ではありません。戦争で財政基盤が弱くなった各区を立て直すため、昭和22年3月15日、東京市にあった35区は22区へ再編されました。同年8月には板橋区から練馬区が分かれ、現在の23区の形になります。城東区と深川区の合併も、この全国的な区の再編の一部として行われました。[昭和20年（1945年）3月10日の東京大空襲](/kameido-history/toto-kushu/)による被害が、こうした区の再編を後押しした背景の一つでした。
+この年の再編は江東区だけの出来事ではありません。東京都総務局の資料によれば、昭和22年3月10日付の告諭第1号は、35区を22区へ再編する理由として、戦災による各区の人口格差の是正と、地方制度改正にともなう自治権拡充への対応の2点を挙げています。同年3月15日、東京市にあった35区は22区へ再編されました。同年8月には板橋区から練馬区が分かれ、現在の23区の形になります。城東区と深川区の合併も、この全国的な区の再編の一部として行われました。[昭和20年（1945年）3月10日の東京大空襲](/kameido-history/toto-kushu/)による被害が、こうした区の再編を後押しした背景の一つでした。
 
 ## まとめ
 
-- 昭和7年（1932年）、亀戸町・大島町・砂町から城東区が成立。区名は「亀戸区」「小名木区」の案を経て決定された
+- 昭和7年（1932年）、亀戸町・大島町・砂町から城東区が成立。区名は「亀戸区」「小名木区」の案を経て決定された（この経緯を裏づける江東区・東京都の一次資料は未発見で、複数の紹介記事が伝える内容として紹介）
 - 昭和22年（1947年）3月15日、城東区と深川区が合併して江東区が誕生。新区名の候補には「辰巳区」「東区」「永代区」もあった。区名の「江」は深川、「東」は城東を表す
-- この合併は東京35区が22区（同年8月に23区）へ再編される全国的な動きの一部で、戦災による区財政の弱体化がその背景にあった
+- この合併は東京35区が22区（同年8月に23区）へ再編される全国的な動きの一部。告諭第1号は戦災による人口格差の是正と自治権拡充への対応を再編理由に挙げている
 `,
-    updatedAt: '2026-09-24',
-    references: [REF.kotoOitachi, REF.kotoKumei, REF.jotoWiki, REF.zatsuneta],
+    updatedAt: '2026-09-30',
+    references: [REF.kotoOitachi, REF.kotoKumei, REF.jotoWiki, REF.soumuTokyo35ku],
   },
 
   // ───────────────────────────── 近代5. 水運と鉄道 ─────────────────────────────
