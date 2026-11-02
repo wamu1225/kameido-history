@@ -310,6 +310,75 @@ function zenizaTimelineSvg(): string {
   );
 }
 
+// 歴史の年表（17の出来事を4つの時代に分けた縦の年表。社伝・伝承は白抜きの丸、記録のある出来事は塗りの丸）
+function historyTimelineSvg(): string {
+  type Ev = { y: string; l: string[]; t?: boolean };
+  const eras: { name: string; color: string; ev: Ev[]; gap?: boolean }[] = [
+    { name: '古い信仰（社伝の時代）', color: AI, ev: [
+      { y: '665年', l: ['香取神社の創建と伝わる'], t: true },
+      { y: '10世紀なかば', l: ['平将門の乱にちなむ', '「勝矢」の故事'], t: true },
+    ] },
+    { name: '江戸の門前町', color: SHU, gap: true, ev: [
+      { y: '1646年', l: ['天神像を亀戸の祠にまつる'] },
+      { y: '1657年', l: ['明暦の大火、復興で', '亀戸も町づくりが進む'] },
+      { y: '1662年', l: ['天神社が現在地に', '社殿・心字池・太鼓橋'] },
+      { y: '1671年以前', l: ['亀戸銭座が芝網縄手から', '移転（江戸図に記載）'] },
+      { y: '18世紀', l: ['梅屋敷がにぎわう', '吉宗も訪れたと伝わる'], t: true },
+    ] },
+    { name: '名物と浮世絵', color: GOLD, ev: [
+      { y: '1805年', l: ['船橋屋が天神門前で創業'] },
+      { y: '1857年', l: ['広重が亀戸の梅屋敷・', '天神境内を描く'] },
+      { y: '1860〜64年', l: ['香取神社周辺で', '亀戸大根の栽培が始まる'] },
+    ] },
+    { name: '近代から戦後の下町', color: AI_DEEP, ev: [
+      { y: '1873年', l: ['天神社が東京府社となる'] },
+      { y: '1923年', l: ['関東大震災の直後に', '亀戸事件'] },
+      { y: '1932年', l: ['城東区が成立'] },
+      { y: '1936年', l: ['「亀戸天神社」に改称'] },
+      { y: '1937〜39年', l: ['第二精工舎の工場が竣工', '（時計の街の始まり）'] },
+      { y: '1945年', l: ['3月10日の東京大空襲'] },
+      { y: '1947年', l: ['城東区と深川区が合併', '江東区が誕生'] },
+    ] },
+  ];
+  const AX = 88;
+  let y = 8;
+  let body = '';
+  let axis = '';
+  const nodes: string[] = [];
+  for (const era of eras) {
+    if (era.gap) {
+      body += `<text x="${AX}" y="${y + 10}" font-size="11" fill="${INK}" text-anchor="middle">⋮</text>` +
+        `<text x="${AX + 12}" y="${y + 11}" font-size="11" fill="${INK}">およそ1000年の空白</text>`;
+      y += 22;
+    }
+    body += `<rect x="6" y="${y}" width="288" height="24" rx="3" fill="${era.color}"/>` +
+      `<text x="16" y="${y + 16.5}" font-size="12" font-weight="700" fill="#ffffff">${era.name}</text>`;
+    y += 24;
+    for (const e of era.ev) {
+      const h = e.l.length > 1 ? 40 : 30;
+      const cy = y + h / 2;
+      axis += `<line x1="${AX}" y1="${y}" x2="${AX}" y2="${y + h}" stroke="${AI}" stroke-width="2"/>`;
+      nodes.push(
+        `<circle cx="${AX}" cy="${cy}" r="5.5" fill="${e.t ? BG : era.color}" stroke="${era.color}" stroke-width="2"${e.t ? ' stroke-dasharray="2.6 1.8"' : ''}/>` +
+          `<text x="${AX - 11}" y="${cy + 4}" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="end">${e.y}</text>` +
+          e.l.map((t, i) => `<text x="${AX + 12}" y="${cy + (e.l.length > 1 ? (i ? 15 : 0) - 1 : 4)}" font-size="11" fill="${INK}">${t}</text>`).join(''),
+      );
+      y += h;
+    }
+    y += 6;
+  }
+  const legendY = y + 6;
+  const legend =
+    `<circle cx="14" cy="${legendY + 4}" r="5" fill="${AI}"/><text x="25" y="${legendY + 8}" font-size="11" fill="${INK}">記録で確かめられる出来事</text>` +
+    `<circle cx="182" cy="${legendY + 4}" r="5" fill="${BG}" stroke="${AI}" stroke-width="2" stroke-dasharray="2.6 1.8"/><text x="193" y="${legendY + 8}" font-size="11" fill="${INK}">社伝・伝承</text>`;
+  const H = legendY + 22;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 ${H}" width="100%" role="img" aria-label="亀戸の歴史年表の図。665年の社伝から1947年の江東区成立まで17の出来事を4つの時代に分けて並べ、社伝・伝承は白抜きの丸で示す">` +
+    `<rect width="300" height="${H}" fill="${BG}"/>` + axis + body + nodes.join('') + legend +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'name-origin': {
@@ -359,6 +428,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'kotsu-timeline': {
     caption: '亀戸の水運から鉄道への年表（模式図）。万治年間（1658年ごろ）に横十間川などの運河が開かれ、明治27年（1894年）には総武鉄道の亀戸駅が開業しました。明治37年（1904年）に東武亀戸線が本線格の路線として開業しましたが、明治43年（1910年）の浅草駅開業で支線となり、昭和に入ると水運も陸上輸送に押されて役割を終えていきました。',
     inner: `<div class="diagram-wrap">${kotsuTimelineSvg()}</div>`,
+  },
+  'history-timeline': {
+    caption: '亀戸の歴史年表（模式図）。665年の社伝から1947年の江東区成立までを、古い信仰・江戸の門前町・名物と浮世絵・近代から戦後の4つの時代に分けました。白抜きの丸は社伝・伝承による出来事、塗りの丸は記録で確かめられる出来事です。',
+    inner: `<div class="diagram-wrap">${historyTimelineSvg()}</div>`,
   },
   'zeniza-timeline': {
     caption: '亀戸銭座の年表（模式図）。寛文11年（1671年）の江戸図にすでに記載があり、芝網縄手（現在の港区）から移転してきたと伝わります。寛文8年（1668年）から天和3年（1683年）には裏面に「文」の字を鋳込んだ寛永通宝「文銭」が鋳造されました。安永2年（1773年）に廃止されたと伝わります。',
