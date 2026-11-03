@@ -214,19 +214,26 @@ function jotoKotoMergeSvg(): string {
 
 // 9) 香取勝運商店街の年表（参道 → 戦後の商店街 → 2011年の看板建築リニューアル）
 function katoriShotengaiTimelineSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const X = (y: number) => Math.round((16 + (y - 1900) * 2.304) * 10) / 10;
+  const row = (ty: number, label: string, x1: number, x2: number, color: string, fade: boolean) =>
+    `<text x="16" y="${ty}" font-size="11.5" fill="${INK}">${label}</text>` +
+    `<rect x="${X(x1)}" y="${ty + 6}" width="${Math.round((X(x2) - X(x1)) * 10) / 10}" height="11" rx="1" fill="${fade ? 'url(#kf)' : color}"/>`;
+  const ticks = [1900, 1925, 1950, 1975, 2000]
+    .map((y) => `<line x1="${X(y)}" y1="22" x2="${X(y)}" y2="30" stroke="${AI_DEEP}" stroke-width="1"/><text x="${X(y)}" y="16" font-size="11" fill="${AI_DEEP}" text-anchor="middle">${y}</text>`)
+    .join('');
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸香取勝運商店街の年表（参道から昭和30年代を再現した街並みまで）の図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="40" y1="54" x2="260" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M260 54 l-8 -4 M260 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(50, '明治', '香取神社の参道が|商店街へ発展', AI) +
-    node(150, '戦後', 'にぎわう|下町の商店街', SHU) +
-    node(250, '2011', '看板建築で|「昭和30年代」を再現', GOLD) +
+    `<svg class="diagram-single" viewBox="0 0 320 200" width="100%" role="img" aria-label="香取勝運商店街の歴史と、手本にした時代・リニューアルの年の位置関係を並べた図">` +
+    `<defs><linearGradient id="kf" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="${SHU}"/><stop offset="1" stop-color="${SHU}" stop-opacity="0"/></linearGradient></defs>` +
+    `<rect width="320" height="200" fill="${BG}"/>` +
+    `<line x1="${X(1900)}" y1="30" x2="${X(2025)}" y2="30" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    ticks +
+    row(52, '商店街として発展（明治の頃から現在まで）', 1900, 2025, AI, false) +
+    row(88, '看板建築の流行（1923年〜昭和初期）', 1923, 1938, SHU, true) +
+    row(124, '手本にした「昭和30年代」（1955〜64年）', 1955, 1964, GOLD, false) +
+    `<line x1="${X(2011)}" y1="36" x2="${X(2011)}" y2="148" stroke="${SHU}" stroke-width="1.6" stroke-dasharray="4 3"/>` +
+    `<circle cx="${X(2011)}" cy="148" r="4" fill="${SHU}"/>` +
+    `<text x="304" y="168" font-size="12" font-weight="700" fill="${SHU}" text-anchor="end">2011年 リニューアルで街並みを新築</text>` +
+    `<text x="304" y="184" font-size="11.5" fill="${INK}" text-anchor="end">手本の時代から約50〜90年あとにつくられた再現</text>` +
     `</svg>`
   );
 }
@@ -414,7 +421,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${jotoKotoMergeSvg()}</div>`,
   },
   'katori-shotengai-timeline': {
-    caption: '亀戸香取勝運商店街の年表（模式図）。香取神社の参道が明治の頃から商店街として発展し、戦後もにぎわいを保ちましたが、平成23年（2011年）に看板建築で「昭和30年代」の街並みへとリニューアルされました。',
+    caption: '香取勝運商店街の時間の位置関係（模式図）。商店街としては明治の頃からの歴史がありますが、手本にした看板建築は1923年（大正12年）以後から昭和初期の流行、コンセプトの「昭和30年代」は1955〜64年で、街並みそのものは2011年（平成23年）につくられた再現です。',
     inner: `<div class="diagram-wrap">${katoriShotengaiTimelineSvg()}</div>`,
   },
   'toyokuni-timeline': {
