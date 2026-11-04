@@ -288,8 +288,8 @@ function kotsuTimelineSvg(): string {
   const tx = (x: number, y: number, t: string, size = 12, w = 400, c = INK, anchor = 'middle') =>
     `<text x="${x}" y="${y}" font-size="${size}" font-weight="${w}" fill="${c}" text-anchor="${anchor}">${t}</text>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 340 290" width="100%" role="img" aria-label="東武亀戸線の位置づけが1910年に変わったことを示す路線の模式図">` +
-    `<rect width="340" height="290" fill="${BG}"/>` +
+    `<svg class="diagram-single" viewBox="0 0 340 306" width="100%" role="img" aria-label="東武亀戸線の位置づけが1910年に変わったことを示す路線の模式図">` +
+    `<rect width="340" height="306" fill="${BG}"/>` +
     tx(14, 24, '① 1904〜1910年　両国橋まで直通', 13, 700, AI_DEEP, 'start') +
     ln(50, 170, 66, GOLD, 5) + ln(170, 290, 66, AI, 5) +
     tx(110, 52, '東武亀戸線', 12, 700, INK) + tx(230, 52, '総武鉄道', 12, 700, INK) +
@@ -301,10 +301,10 @@ function kotsuTimelineSvg(): string {
     tx(14, 178, '② 1910年〜　浅草が東武の起点に', 13, 700, AI_DEEP, 'start') +
     ln(40, 160, 222, AI, 6) + ln(160, 290, 222, GOLD, 3) +
     tx(100, 208, '東武の本線', 12, 700, INK) + tx(225, 208, '亀戸線 3.4km', 12, 700, INK) +
-    tx(100, 244, '1910年　浅草駅開業', 11.5) + tx(225, 244, '支線に（2両編成）', 11.5) +
+    tx(100, 270, '1910年　浅草駅開業', 11.5) + tx(225, 270, '支線に（2両編成）', 11.5) +
     st(40, 222, '浅草', AI) + st(160, 222, '曳舟', GOLD) + st(290, 222, '亀戸', SHU) +
-    ln(14, 44, 276, '#8a8372', 1.6, '4 3') +
-    tx(52, 280, '越中島・新橋への延伸構想は実現せず', 11.5, 400, INK, 'start') +
+    ln(14, 44, 292, '#8a8372', 1.6, '4 3') +
+    tx(52, 296, '越中島・新橋への延伸構想は実現せず', 11.5, 400, INK, 'start') +
     `</svg>`
   );
 }
