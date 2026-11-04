@@ -280,20 +280,31 @@ function suijinguTimelineSvg(): string {
 
 // 12) 水運から鉄道への年表
 function kotsuTimelineSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const st = (x: number, y: number, name: string, c: string) =>
+    `<circle cx="${x}" cy="${y}" r="8" fill="${c}"/>` +
+    `<text x="${x}" y="${y + 26}" font-size="12.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${name}</text>`;
+  const ln = (x1: number, x2: number, y: number, c: string, w: number, dash = '') =>
+    `<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="${c}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+  const tx = (x: number, y: number, t: string, size = 12, w = 400, c = INK, anchor = 'middle') =>
+    `<text x="${x}" y="${y}" font-size="${size}" font-weight="${w}" fill="${c}" text-anchor="${anchor}">${t}</text>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸の水運から鉄道への年表の図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(40, '1658頃', '横十間川など|運河の開削', AI) +
-    node(125, '1894', '総武鉄道|亀戸駅', SHU) +
-    node(200, '1904', '東武亀戸線|開業（本線格）', GOLD) +
-    node(260, '1910〜', '浅草駅開業で|支線化・水運衰退', AI) +
+    `<svg class="diagram-single" viewBox="0 0 340 290" width="100%" role="img" aria-label="東武亀戸線の位置づけが1910年に変わったことを示す路線の模式図">` +
+    `<rect width="340" height="290" fill="${BG}"/>` +
+    tx(14, 24, '① 1904〜1910年　両国橋まで直通', 13, 700, AI_DEEP, 'start') +
+    ln(50, 170, 66, GOLD, 5) + ln(170, 290, 66, AI, 5) +
+    tx(110, 52, '東武亀戸線', 12, 700, INK) + tx(230, 52, '総武鉄道', 12, 700, INK) +
+    tx(110, 88, '1904年開業', 11.5) + tx(230, 88, '1894年開業', 11.5) +
+    st(50, 66, '曳舟', GOLD) + st(170, 66, '亀戸', SHU) + st(290, 66, '両国橋', AI) +
+    `<path d="M62 124 H278 M278 124 l-7 -4 M278 124 l-7 4" stroke="${GOLD}" stroke-width="2" fill="none"/>` +
+    tx(170, 118, '東武の列車が総武の線路に乗り入れ', 12, 400) +
+    ln(14, 326, 152, '#cfc6b4', 1) +
+    tx(14, 178, '② 1910年〜　浅草が東武の起点に', 13, 700, AI_DEEP, 'start') +
+    ln(40, 160, 222, AI, 6) + ln(160, 290, 222, GOLD, 3) +
+    tx(100, 208, '東武の本線', 12, 700, INK) + tx(225, 208, '亀戸線 3.4km', 12, 700, INK) +
+    tx(100, 244, '1910年　浅草駅開業', 11.5) + tx(225, 244, '支線に（2両編成）', 11.5) +
+    st(40, 222, '浅草', AI) + st(160, 222, '曳舟', GOLD) + st(290, 222, '亀戸', SHU) +
+    ln(14, 44, 276, '#8a8372', 1.6, '4 3') +
+    tx(52, 280, '越中島・新橋への延伸構想は実現せず', 11.5, 400, INK, 'start') +
     `</svg>`
   );
 }
@@ -433,7 +444,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${suijinguTimelineSvg()}</div>`,
   },
   'kotsu-timeline': {
-    caption: '亀戸の水運から鉄道への年表（模式図）。万治年間（1658年ごろ）に横十間川などの運河が開かれ、明治27年（1894年）には総武鉄道の亀戸駅が開業しました。明治37年（1904年）に東武亀戸線が本線格の路線として開業しましたが、明治43年（1910年）の浅草駅開業で支線となり、昭和に入ると水運も陸上輸送に押されて役割を終えていきました。',
+    caption: '東武亀戸線の位置づけの変化（路線の模式図・距離は縮尺どおりではありません）。①明治37年（1904年）の開業から明治43年（1910年）までは、東武の列車は亀戸から総武鉄道の線路に入って両国橋駅まで直通していました。②明治43年に浅草駅（初代）が開業すると直通は廃止され、亀戸線は曳舟〜亀戸間3.4kmの支線になりました。',
     inner: `<div class="diagram-wrap">${kotsuTimelineSvg()}</div>`,
   },
   'history-timeline': {
