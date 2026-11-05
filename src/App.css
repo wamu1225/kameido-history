@@ -243,26 +243,28 @@
 
 /* ===== コールアウト ===== */
 .callout {
-  border-radius: 8px;
-  padding: 13px 16px 13px 44px;
+  border-radius: 0 6px 6px 0;
+  padding: 10px 14px 12px 16px;
   margin: 18px 0;
   position: relative;
   font-size: 0.94rem;
   line-height: 1.75;
+  border-left: 4px solid var(--line);
 }
 .callout::before {
-  position: absolute;
-  left: 14px;
-  top: 13px;
+  display: block;
+  margin-bottom: 2px;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
 }
-.callout-tip { background: var(--tip-bg); border: 1px solid #cfe0ef; }
-.callout-tip::before { content: 'ヒント'; left: 13px; writing-mode: vertical-rl; top: 12px; letter-spacing: 0; color: var(--ai); font-size: 0.62rem; }
-.callout-warning { background: var(--warn-bg); border: 1px solid #ecc8bf; }
-.callout-warning::before { content: '注意'; writing-mode: vertical-rl; left: 14px; top: 12px; color: var(--shu); font-size: 0.62rem; }
-.callout-info { background: var(--info-bg); border: 1px solid var(--line); }
-.callout-info::before { content: '補足'; writing-mode: vertical-rl; left: 14px; top: 12px; color: var(--gold); font-size: 0.62rem; }
+.callout-tip { background: var(--tip-bg); border-left-color: var(--ai); }
+.callout-tip::before { content: 'ヒント'; color: var(--ai); }
+.callout-warning { background: var(--warn-bg); border-left-color: var(--shu); }
+.callout-warning::before { content: '注意'; color: var(--shu); }
+.callout-info { background: var(--info-bg); border-left-color: var(--gold); }
+.callout-info::before { content: '補足'; color: var(--gold); }
 
 /* ===== 表 ===== */
 .content-table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 8px; border: 1px solid var(--line); }
