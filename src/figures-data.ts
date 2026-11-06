@@ -47,19 +47,25 @@ function nameOriginSvg(): string {
 
 // 2) 天神社 創建の流れ（1646 遍歴 → 1657 大火 → 1662 正遷宮）
 function tenjinFoundingSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const rows: [string, string, string, string][] = [
+    ['1646', '正保3年', '信祐が天神の神像を奉じ諸国を巡る', AI],
+    ['1657', '明暦3年', '明暦の大火。幕府が江戸の復興を進める', SHU],
+    ['1662', '寛文2年', '正遷宮。社殿・心字池・太鼓橋が整う', GOLD],
+    ['1873', '明治6年', '東京府社となり「亀戸神社」に', AI],
+    ['1936', '昭和11年', '現在の「亀戸天神社」に改称', AI],
+  ];
+  const H = 40 + rows.length * 52;
+  const body = rows.map((r, i) => {
+    const y = 38 + i * 52;
+    return `<circle cx="34" cy="${y}" r="8" fill="${r[3]}"/>` +
+      `<text x="56" y="${y - 4}" font-size="13" font-weight="700" fill="${AI_DEEP}">${r[0]}年（${r[1]}）</text>` +
+      `<text x="56" y="${y + 15}" font-size="12" fill="${INK}">${r[2]}</text>`;
+  }).join('');
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸天神社の創建の流れの図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="48" y1="54" x2="252" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M252 54 l-8 -4 M252 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(60, '正保3 (1646)', '信祐が|天神像を奉じ巡歴', AI) +
-    node(150, '明暦3 (1657)', '明暦の大火|→復興へ', SHU) +
-    node(240, '寛文2 (1662)', '正遷宮|社殿・太鼓橋', GOLD) +
+    `<svg class="diagram-single" viewBox="0 0 340 ${H}" width="100%" role="img" aria-label="亀戸天神社の創建から現社名までの年表">` +
+    `<rect width="340" height="${H}" fill="${BG}"/>` +
+    `<line x1="34" y1="38" x2="34" y2="${38 + (rows.length - 1) * 52}" stroke="${AI}" stroke-width="2.4"/>` +
+    body +
     `</svg>`
   );
 }
@@ -404,7 +410,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${nameOriginSvg()}</div>`,
   },
   'tenjin-scene': {
-    caption: '亀戸天神社の創建の流れ（模式図）。太宰府の神官・信祐が天神像を奉じて巡歴し（1646年）、明暦の大火（1657年）後の復興のなかで、太宰府にならって正遷宮が行われました（1662年）。',
+    caption: '亀戸天神社の年表。1646年に信祐が天神像を奉じて巡歴し、1657年の明暦の大火後の復興のなかで、1662年に太宰府にならって正遷宮が行われました。社名は1873年に亀戸神社、1936年に現在の亀戸天神社になりました。',
     inner: `<div class="diagram-wrap">${tenjinFoundingSvg()}</div>`,
   },
   'taikobashi-skytree': {
