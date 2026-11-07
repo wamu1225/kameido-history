@@ -403,8 +403,41 @@ function historyTimelineSvg(): string {
   );
 }
 
+// 名物のはじまり（縦軸＝年を比例）
+function meibutsuSvg(): string {
+  const Y0 = 1790, K = 1.35, T = 28;
+  const yy = (yr: number) => T + (yr - Y0) * K;
+  const items: [number, string, string, string][] = [
+    [1805, '1805年', '船橋屋のくず餅（文化2年）', AI],
+    [1862, '1860年代', '亀戸大根（文久年間ごろ）', AI],
+    [1954, '1954年', '亀戸餃子の創業（昭和29年）', AI],
+    [2000, '2000年', '「亀戸ホルモン」創業と伝わる', SHU],
+  ];
+  const H = Math.round(yy(2025)) + 20;
+  const edo = `<rect x="30" y="${yy(1790)}" width="8" height="${yy(1868) - yy(1790)}" fill="${GOLD}"/>` +
+    `<text x="46" y="${yy(1868) - 4}" font-size="11" fill="${INK}">〜1868 江戸時代</text>`;
+  const ticks = [1800, 1900, 2000].map(v => `<line x1="26" y1="${yy(v)}" x2="42" y2="${yy(v)}" stroke="${AI_DEEP}" stroke-width="1.4"/>`).join('');
+  const body = items.map(it => {
+    const y = yy(it[0]);
+    return `<circle cx="34" cy="${y}" r="7" fill="${it[3]}"/>` +
+      `<text x="52" y="${y - 3}" font-size="13" font-weight="700" fill="${AI_DEEP}">${it[1]}</text>` +
+      `<text x="52" y="${y + 13}" font-size="12" fill="${INK}">${it[2]}</text>`;
+  }).join('');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 340 ${H}" width="100%" role="img" aria-label="亀戸の名物のはじまりを年に比例した縦軸で並べた図。1805年のくず餅から2000年のホルモン店まで">` +
+    `<rect width="340" height="${H}" fill="${BG}"/>` +
+    `<line x1="34" y1="${yy(1790)}" x2="34" y2="${yy(2025)}" stroke="${AI}" stroke-width="2"/>` +
+    edo + ticks + body +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
+  'meibutsu-timeline': {
+    caption: '亀戸の名物が生まれた年（縦の長さは年に比例）。江戸時代の二つから昭和の餃子まで約150年、ホルモン店はそのさらに約半世紀後です。',
+    inner: `<div class="diagram-wrap">${meibutsuSvg()}</div>`,
+  },
   'name-origin': {
     caption: '亀戸の地名の三つの説（模式図）。亀の形をした島、亀甲を思わせる井桁の古井戸「亀ヶ井」、神社の領民を指す「神戸（かみど）」の転訛——いずれの説も併存し、一つには断定されていません。',
     inner: `<div class="diagram-wrap">${nameOriginSvg()}</div>`,
