@@ -161,7 +161,7 @@ export const articles: Article[] = [
 - 香取神社の創建は社伝、天神社の正遷宮（1662年）以降は記録の残る出来事が多い
 - 名物（くず餅・亀戸大根）と浮世絵は、門前町のにぎわいを背景に生まれた
 `,
-    updatedAt: '2026-09-24',
+    updatedAt: '2026-11-02',
     references: [REF.koto, REF.katori, REF.tenjin, REF.funabashiya, REF.fujibi, REF.seikoDesign, REF.nimuraKameido, REF.kotoOitachi],
   },
 
@@ -317,7 +317,7 @@ export const articles: Article[] = [
 - 江戸期は「東宰府天満宮」、昭和11年（1936年）に現社名へ
 - うそ替え神事（1月）と藤まつり（春）、太鼓橋と心字池の景観が見どころ
 `,
-    updatedAt: '2026-07-20',
+    updatedAt: '2026-11-06',
     references: [REF.tenjin],
   },
 
@@ -899,7 +899,7 @@ JA東京中央会の資料によれば、亀戸大根の栽培は**文久年間�
 - 明治37年（1904年）開業の東武亀戸線は、当初は都心乗り入れを目指す本線格の計画だったが、総武鉄道の国有化（1907年）と浅草駅開業（1910年）で支線となった
 - 昭和に入り水運は陸上輸送に押され、運河の一部は埋め立て・暗渠化された（竪川の上の首都高速7号線など）
 `,
-    updatedAt: '2026-09-27',
+    updatedAt: '2026-11-04',
     references: [REF.tobuKameidoLine, REF.tetsudoComKameido1, REF.tetsudoComKameido2, REF.tokyoRiverYokojikken, REF.kameidoTurtlesSuiun1, REF.kameidoTurtlesSuiun2],
   },
 
@@ -1036,7 +1036,7 @@ JA東京中央会の資料によれば、亀戸大根の栽培は**文久年間�
 - 天神社の参道・天神通り商店街には演出が無く、老舗の和菓子店が並ぶ門前町の姿がそのまま残る
 - 商店街の見た目は平成のものだが、リニューアル前から商いを続ける老舗も軒を連ねている
 `,
-    updatedAt: '2026-09-21',
+    updatedAt: '2026-11-03',
     references: [REF.kotoKankoKatoriShotengai, REF.tokyoNpKatoriShotengai, REF.kotoKankoJusangen, REF.kotoKankoTenjinDori, REF.adomachiJusangen],
   },
 
