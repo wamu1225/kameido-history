@@ -427,6 +427,7 @@ function Footer() {
         <a href="https://study-apps.com/editorial-policy/">編集方針</a>
         <a href="https://study-apps.com/">study-apps.com</a>
       </div>
+      <div className="site-footer-links"><span>ほかの まちの歴史：<a href="https://study-apps.com/fukagawa-history/">深川</a> ・ <a href="https://study-apps.com/yanaka-history/">谷中</a> ・ <a href="https://study-apps.com/tsukuda-history/">佃島</a> ・ <a href="https://study-apps.com/oji-history/">王子</a></span></div>
       <div className="site-footer-note">
         本サイトは亀戸の歴史と文化に関する一般的な情報を、公的・一次資料をもとに自分の言葉でまとめたものです。年代や伝承には諸説あります。
       </div>
