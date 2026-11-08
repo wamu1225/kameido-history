@@ -315,6 +315,41 @@ function kotsuTimelineSvg(): string {
   );
 }
 
+// 見どころの駅からの歩く時間（JR亀戸駅北口から。各施設・江東区観光協会の案内の所要時間）
+function walkMinutesSvg(): string {
+  const rows: { n: string; m: number; c: string }[] = [
+    { n: '亀戸梅屋敷（観光施設）', m: 5, c: AI },
+    { n: '香取勝運商店街', m: 5, c: GOLD },
+    { n: '亀戸升本 本店', m: 7, c: GOLD },
+    { n: '亀戸香取神社', m: 10, c: SHU },
+    { n: '亀戸天神社', m: 15, c: SHU },
+    { n: '龍眼寺（萩寺）', m: 20, c: SHU },
+  ];
+  const x0 = 14, k = 11, top = 40, rh = 40;
+  let g = '';
+  for (const t of [5, 10, 15, 20]) {
+    const x = x0 + t * k;
+    g += `<line x1="${x}" y1="${top - 8}" x2="${x}" y2="${top + rows.length * rh - 8}" stroke="#cfc6b4" stroke-width="1"/>` +
+      `<text x="${x}" y="${top - 14}" font-size="11.5" fill="${INK}" text-anchor="middle">${t}分</text>`;
+  }
+  rows.forEach((r, i) => {
+    const y = top + i * rh;
+    g += `<text x="${x0}" y="${y + 6}" font-size="12.5" font-weight="700" fill="${AI_DEEP}">${r.n}</text>` +
+      `<rect x="${x0}" y="${y + 12}" width="${r.m * k}" height="12" fill="${r.c}"/>` +
+      `<text x="${x0 + r.m * k + 6}" y="${y + 23}" font-size="12" font-weight="700" fill="${INK}">${r.m}分</text>`;
+  });
+  const ly = top + rows.length * rh + 10;
+  const key = (x: number, c: string, t: string) =>
+    `<rect x="${x}" y="${ly - 9}" width="11" height="11" fill="${c}"/><text x="${x + 16}" y="${ly + 1}" font-size="11.5" fill="${INK}">${t}</text>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 340 ${ly + 18}" width="100%" role="img" aria-label="亀戸駅北口から6つの見どころまで歩く時間を並べた棒グラフ。梅屋敷と商店街が5分、升本が7分、香取神社が10分、天神社が15分、龍眼寺が20分">` +
+    `<rect width="340" height="${ly + 18}" fill="${BG}"/>` +
+    `<text x="${x0}" y="14" font-size="12.5" font-weight="700" fill="${AI_DEEP}">JR亀戸駅北口から歩く時間</text>` +
+    g + key(14, SHU, '社寺') + key(78, GOLD, '名物・商店') + key(178, AI, '施設') +
+    `</svg>`
+  );
+}
+
 // 13) 亀戸銭座の年表
 function zenizaTimelineSvg(): string {
   const node = (x: number, year: string, label: string, color: string) =>
@@ -489,6 +524,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'history-timeline': {
     caption: '亀戸の歴史年表（模式図）。665年の社伝から1947年の江東区成立までを、古い信仰・江戸の門前町・名物と浮世絵・近代から戦後の4つの時代に分けました。白抜きの丸は社伝・伝承による出来事、塗りの丸は記録で確かめられる出来事です。',
     inner: `<div class="diagram-wrap">${historyTimelineSvg()}</div>`,
+  },
+  'walk-minutes': {
+    caption: '亀戸駅北口から各スポットまでの歩く時間（各施設の案内による。棒の長さは時間に比例）。梅屋敷と商店街は5分、升本は7分、香取神社は10分、天神社は15分、龍眼寺は20分です。',
+    inner: `<div class="diagram-wrap">${walkMinutesSvg()}</div>`,
   },
   'zeniza-timeline': {
     caption: '亀戸銭座の年表（模式図）。寛文11年（1671年）の江戸図にすでに記載があり、芝網縄手（現在の港区）から移転してきたと伝わります。寛文8年（1668年）から天和3年（1683年）には裏面に「文」の字を鋳込んだ寛永通宝「文銭」が鋳造されました。安永2年（1773年）に廃止されたと伝わります。',
