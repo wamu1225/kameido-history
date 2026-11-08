@@ -2,7 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { articles } from '../src/data/articles.ts';
 import type { Article } from '../src/data/articles.ts';
-import { figureHtml } from '../src/figures-data.ts';
+import { figureHtml, heroSceneSvg } from '../src/figures-data.ts';
+import { HOOK, ARTICLE_POINTS } from '../src/data/hooks.ts';
 import { referencesHtml } from '../src/references.ts';
 import { sectionIconSvg } from '../src/section-icons.ts';
 import { tokenizeInline } from '../src/lib/inline.ts';
@@ -153,16 +154,22 @@ const groupListHtml = GROUP_ORDER
   .map((group) => {
     const items = articles
       .filter((a) => a.group === group.key)
-      .map((a) => `<li style="margin-bottom:12px"><a href="/kameido-history/${a.id}/" style="color:${AI};font-weight:600;text-decoration:none">${escapeHtml(a.shortTitle)}</a><br><span style="color:#555;font-size:0.9rem">${escapeHtml(a.description)}</span></li>`)
+      .map((a) => `<li style="margin-bottom:8px">${ico(a.icon, 16, SHU)} <a href="/kameido-history/${a.id}/" style="color:${AI};font-weight:600;text-decoration:none">${escapeHtml(a.shortTitle)}</a></li>`)
       .join('\n');
     if (!items) return '';
-    return `<div style="margin:24px 0 16px"><div style="font-size:0.95rem;color:${AI_DEEP};font-weight:700;margin-bottom:4px;border-left:4px solid ${SHU};padding-left:10px">${ico(group.icon, 15)} ${escapeHtml(group.key)}</div><div style="font-size:0.85rem;color:#4b5563;margin:6px 0 10px;padding-left:14px">${escapeHtml(group.description)}</div><ul style="list-style:none;padding:0 0 0 14px;margin:0">${items}</ul></div>`;
+    return `<div style="margin:24px 0 16px"><div style="font-size:0.95rem;color:${AI_DEEP};font-weight:700;margin-bottom:10px;border-left:4px solid ${SHU};padding-left:10px">${ico(group.icon, 15)} ${escapeHtml(group.key)}</div><ul style="list-style:none;padding:0 0 0 14px;margin:0">${items}</ul></div>`;
   })
   .join('\n');
 
 const rootStaticContent = `<article id="static-fallback" style="font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif;line-height:1.85;max-width:880px;margin:0 auto;padding:24px 16px;color:${AI_DEEP}">
-  <h1 style="font-size:1.8rem;font-weight:700;border-bottom:2px solid ${AI};padding-bottom:10px;margin-bottom:16px;color:${AI_DEEP}">${SITE_NAME}</h1>
-  <p style="color:#444;margin-bottom:24px">東京・下町の亀戸（東京都江東区）の歴史と文化を、公的・一次の資料で確かめながらやさしく紹介します。地名の由来、「武」の香取神社と「文」の天神社、江戸東京野菜の亀戸大根、船橋屋のくず餅、歌川広重の浮世絵まで。</p>
+  <p style="color:#555;font-size:0.8rem;margin:0">${SITE_NAME}　東京都江東区 亀戸</p>
+  <h1 style="font-size:1.6rem;font-weight:700;line-height:1.4;margin:8px 0 10px;color:${AI_DEEP}">${escapeHtml(HOOK.catch).replace('\n', '<br>')}</h1>
+  <p style="color:#444;margin-bottom:16px">${escapeHtml(HOOK.sub)}</p>
+  <div style="border:1px solid #e2dccb;border-radius:12px;overflow:hidden;line-height:0">${heroSceneSvg()}</div>
+  <ul style="padding-left:18px;margin:18px 0">${HOOK.numbers.map((x) => `<li><a href="/kameido-history/${x.id}/" style="color:${SHU}"><strong>${escapeHtml(x.n + x.unit)}</strong></a>：${escapeHtml(x.label)}</li>`).join('')}</ul>
+  <h2 style="font-size:1.2rem;color:${AI_DEEP};margin:24px 0 8px">気になる問いから読む</h2>
+  <ul style="padding-left:18px">${HOOK.questions.map((x) => `<li style="margin-bottom:8px"><a href="/kameido-history/${x.id}/" style="color:${AI}"><strong>${escapeHtml(x.q)}</strong></a> ${escapeHtml(x.a)}</li>`).join('')}</ul>
+  <h2 style="font-size:1.2rem;color:${AI_DEEP};margin:24px 0 8px">記事をぜんぶ見る</h2>
 ${groupListHtml}
   <nav style="margin-top:32px;border-top:1px solid #ddd;padding-top:16px;display:flex;gap:16px;flex-wrap:wrap">
     <a href="/kameido-history/about/" style="color:${AI}">サイトについて</a>
@@ -229,6 +236,10 @@ function buildArticleFallback(a: Article): string {
   const contentHtml = markdownToHtml(a.content);
   const chapterNavHtml = buildChapterNav(a.id);
   const leadHtml = a.lead ? `<p class="lead" style="color:#555;font-size:1.04rem;margin:16px 0 24px">${inlineToHtml(a.lead)}</p>` : '';
+  const pts = ARTICLE_POINTS[a.id];
+  const pointsHtml = pts
+    ? `<aside style="margin:0 0 22px;padding:12px 16px;background:#fffdf8;border:2px solid ${SHU};border-radius:8px" aria-label="ざっくり3行"><p style="margin:0 0 4px;font-weight:700;color:${SHU};font-size:0.85rem">ざっくり3行</p><ol style="margin:0;padding-left:1.3em">${pts.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ol></aside>`
+    : '';
   return `<article style="font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif;line-height:1.85;max-width:880px;margin:0 auto;padding:24px 16px;color:#2a2f3a">
   <nav style="font-size:0.85rem;color:#6b7280;margin:0 0 16px"><a href="/kameido-history/" style="color:${AI};text-decoration:none">${SITE_NAME}</a> <span style="color:#9ca3af">›</span> <span style="color:#4b5563;font-weight:600">${escapeHtml(a.shortTitle)}</span></nav>
   <header style="margin-bottom:20px">
@@ -237,6 +248,7 @@ function buildArticleFallback(a: Article): string {
     <div style="font-size:0.85rem;color:#6b7280;margin-top:10px">最終更新: ${formatDateJa(a.updatedAt)}</div>
   </header>
   ${leadHtml}
+  ${pointsHtml}
   ${tocHtml}
   <div class="section-content">
 ${contentHtml}

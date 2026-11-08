@@ -504,3 +504,57 @@ export function figureHtml(id: string): string | null {
   if (!f) return null;
   return `<div class="content-figure">${f.inner}<p class="figure-caption">${f.caption}</p></div>`;
 }
+
+// トップの絵（2026-11-08）：亀戸天神社の心字池にかかる朱の太鼓橋、手前上に垂れる藤棚、奥に東京スカイツリー（模式図）。
+// 文字は入れない（小さな文字が 390px 幅で読めなくなるため）。説明は aria-label に持たせる。
+export function heroSceneSvg(): string {
+  const fuji = [14, 36, 58, 80, 102, 124, 146, 168, 190, 212, 234, 256, 278, 300, 322, 344]
+    .map((x, i) => {
+      const len = [34, 46, 28, 52, 38, 30, 44, 26, 40, 32, 48, 30, 36, 50, 28, 42][i];
+      let dots = '';
+      for (let y = 20; y < 20 + len; y += 7) {
+        const r = 4.2 - ((y - 20) / len) * 2;
+        dots += `<circle cx="${x + ((y / 7) % 2 ? 1.5 : -1.5)}" cy="${y}" r="${r.toFixed(1)}" fill="${y % 14 ? '#8a6fbf' : '#a48fd0'}"/>`;
+      }
+      return dots;
+    })
+    .join('');
+  return (
+    `<svg viewBox="0 0 360 210" width="100%" role="img" aria-label="亀戸天神社の景色の模式的な絵。心字池に朱塗りの太鼓橋が大きく反ってかかり、手前の上には藤棚から藤の花が垂れ、奥に東京スカイツリーが立っています">` +
+    `<rect width="360" height="210" fill="#e7eef4"/>` +
+    // スカイツリー（奥・右寄り）
+    `<path d="M284 150 L292 58 L296 58 L304 150 Z" fill="#9fb4c6"/>` +
+    `<rect x="286" y="86" width="16" height="7" rx="2" fill="#8aa1b6"/>` +
+    `<rect x="289" y="64" width="10" height="5" rx="2" fill="#8aa1b6"/>` +
+    `<line x1="294" y1="34" x2="294" y2="60" stroke="#9fb4c6" stroke-width="2.5"/>` +
+    // 本殿の屋根（奥・左寄り）と木立
+    `<path d="M40 150 V128 H112 V150 Z" fill="#e9dcc3"/>` +
+    `<path d="M30 130 Q76 106 122 130 Z" fill="${AI}"/>` +
+    `<rect x="72" y="112" width="8" height="5" fill="${GOLD}"/>` +
+    `<path d="M0 150 Q10 128 24 140 Q30 124 40 142 V150 Z" fill="#7d8f5a"/>` +
+    `<path d="M122 150 Q132 130 146 142 Q156 128 168 146 L250 150 Q262 132 276 146 V150 Z" fill="#7d8f5a"/>` +
+    `<path d="M310 150 Q322 130 336 142 Q346 128 360 140 V150 Z" fill="#7d8f5a"/>` +
+    // 心字池
+    `<rect x="0" y="150" width="360" height="60" fill="#bcd6e8"/>` +
+    `<path d="M20 186 h40 M130 198 h50 M250 190 h44 M300 202 h40" stroke="#dbe9f2" stroke-width="2"/>` +
+    // 太鼓橋の映り込み
+    `<path d="M60 160 Q180 214 300 160" fill="none" stroke="#cf9c90" stroke-width="5" opacity="0.5"/>` +
+    // 太鼓橋（朱）
+    `<path d="M60 160 Q180 54 300 160" fill="none" stroke="${SHU}" stroke-width="10" stroke-linecap="round"/>` +
+    `<path d="M66 146 Q180 46 294 146" fill="none" stroke="${SHU}" stroke-width="3"/>` +
+    [96, 128, 160, 200, 232, 264].map((x) => {
+      const t = (x - 60) / 240;
+      const yTop = (1 - t) * (1 - t) * 146 + 2 * (1 - t) * t * 46 + t * t * 146;
+      const yBot = (1 - t) * (1 - t) * 160 + 2 * (1 - t) * t * 54 + t * t * 160;
+      return `<line x1="${x}" y1="${yTop.toFixed(1)}" x2="${x}" y2="${yBot.toFixed(1)}" stroke="${SHU}" stroke-width="3"/>`;
+    }).join('') +
+    `<circle cx="180" cy="${(0.25 * 146 + 0.5 * 46 + 0.25 * 146 - 4).toFixed(1)}" r="3" fill="${GOLD}"/>` +
+    // 藤棚（手前・上）
+    `<rect x="0" y="10" width="360" height="5" fill="#6e5a3a"/>` +
+    `<path d="M0 16 Q20 22 40 16 T80 16 T120 16 T160 16 T200 16 T240 16 T280 16 T320 16 T360 16" fill="none" stroke="#6e7d4a" stroke-width="5"/>` +
+    fuji +
+    `<rect x="4" y="10" width="5" height="200" fill="#6e5a3a"/>` +
+    `<rect x="351" y="10" width="5" height="200" fill="#6e5a3a"/>` +
+    `</svg>`
+  );
+}

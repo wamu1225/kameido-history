@@ -371,3 +371,86 @@
   .hero h1 { font-size: 1.46rem; }
   .article-header h1 { font-size: 1.3rem; }
 }
+
+/* ===== トップのつかみ（2026-11-08）：最初の1画面に事実の一行・町の絵・数字 ===== */
+.hook { padding: 6px 0 4px; }
+.hook-eyebrow { font-size: 0.8rem; color: var(--ink-soft); margin: 0; letter-spacing: 0.04em; }
+.hook-catch {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 6.4vw, 2.3rem);
+  line-height: 1.4;
+  margin: 10px 0 10px;
+  color: var(--ai-deep);
+  white-space: pre-line;
+}
+.hook-sub { font-size: 1rem; line-height: 1.8; color: var(--ink); margin: 0 0 16px; }
+.hook-scene { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #e7eef4; line-height: 0; }
+.hook-scene svg { display: block; }
+
+.hook-numbers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0 8px; }
+.hook-number {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 10px;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--shu);
+  border-radius: 0 0 8px 8px;
+  color: var(--ink);
+}
+.hook-number:hover { text-decoration: none; border-color: var(--ai-soft); border-top-color: var(--shu); }
+.hook-number-icon { color: var(--ai); line-height: 0; }
+.hook-number-n { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--shu); line-height: 1.1; }
+.hook-number-n small { font-size: 0.82rem; margin-left: 2px; color: var(--ink); }
+.hook-number-label { font-size: 0.8rem; line-height: 1.5; color: var(--ink); }
+
+.hook-h2 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  margin: 30px 0 12px;
+  padding-left: 12px;
+  border-left: 4px solid var(--gold);
+}
+.hook-questions ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.hook-questions a {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 14px;
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ai);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--ink);
+}
+.hook-questions a:hover { text-decoration: none; border-color: var(--ai-soft); }
+.hook-q-icon {
+  flex: 0 0 40px; width: 40px; height: 40px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--tip-bg); color: var(--ai);
+}
+.hook-q-body { min-width: 0; }
+.hook-q { display: block; font-family: var(--font-serif); font-size: 1.1rem; font-weight: 700; color: var(--ai-deep); line-height: 1.5; }
+.hook-a { display: block; margin-top: 4px; font-size: 0.94rem; line-height: 1.7; }
+.hook-more { display: block; margin-top: 6px; font-size: 0.84rem; font-weight: 700; color: var(--shu); }
+
+/* 記事一覧：説明文を外して題だけ（グループ分けは従来どおり） */
+.title-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 14px; }
+.title-list a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ai-deep); font-weight: 700; font-size: 0.98rem;
+}
+.title-list a:hover { text-decoration: none; background: var(--paper-card); }
+.title-list-icon { color: var(--shu); line-height: 0; flex-shrink: 0; }
+.section-group { margin-bottom: 22px; }
+
+/* ===== 記事の冒頭の「ざっくり3行」 ===== */
+.points {
+  margin: 0 0 22px;
+  padding: 14px 16px 12px;
+  background: var(--paper-card);
+  border: 2px solid var(--shu);
+  border-radius: 8px;
+}
+.points-label { margin: 0 0 6px; font-size: 0.84rem; font-weight: 700; color: var(--shu); letter-spacing: 0.06em; }
+.points ol { margin: 0; padding-left: 1.3em; }
+.points li { margin: 4px 0; line-height: 1.7; font-size: 0.98rem; }

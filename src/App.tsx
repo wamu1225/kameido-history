@@ -3,7 +3,8 @@ import type { ReactNode } from 'react';
 import { ArrowLeft, List, ChevronRight, Menu, X, Calendar } from 'lucide-react';
 import { articles } from './data/articles';
 import type { Article } from './data/articles';
-import { figureHtml } from './figures-data';
+import { figureHtml, heroSceneSvg } from './figures-data';
+import { HOOK, ARTICLE_POINTS } from './data/hooks';
 import { referencesHtml } from './references';
 import { sectionIconSvg } from './section-icons';
 import { tokenizeInline } from './lib/inline';
@@ -225,39 +226,64 @@ function Home() {
   useEffect(() => { document.title = `${SITE_NAME}｜天神・香取神社・亀戸大根・くず餅・広重の浮世絵`; window.scrollTo(0, 0); }, []);
   return (
     <>
-      <div className="hero">
-        <div className="hero-mark" aria-hidden="true">
-          <SectionIcon name="landmark" size={40} />
-        </div>
-        <h1>{SITE_NAME}</h1>
-        <p>
-          東京・下町の亀戸（江東区）の歴史と文化を、公的・一次の資料で確かめながらやさしく紹介します。<br />
-          地名の由来、「武」の香取神社と「文」の天神社、江戸東京野菜の亀戸大根、船橋屋のくず餅、そして歌川広重の浮世絵まで。
-        </p>
-      </div>
+      {/* トップは説明文から始めない：事実の一行・町の絵・数字・問いから入る（2026-11-08 ユーザー「テキストだらけで読む気が起きない」） */}
+      <section className="hook">
+        <p className="hook-eyebrow">{SITE_NAME}　東京都江東区 亀戸</p>
+        <h1 className="hook-catch">{HOOK.catch}</h1>
+        <p className="hook-sub">{HOOK.sub}</p>
+        <div className="hook-scene" dangerouslySetInnerHTML={{ __html: heroSceneSvg() }} />
+      </section>
 
+      <section className="hook-numbers" aria-label="数字で見る亀戸">
+        {HOOK.numbers.map((x) => (
+          <a key={x.label} className="hook-number" href={`${BASE}/${x.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${x.id}/`); }}>
+            <span className="hook-number-icon"><SectionIcon name={x.icon} size={22} /></span>
+            <span className="hook-number-n">{x.n}<small>{x.unit}</small></span>
+            <span className="hook-number-label">{x.label}</span>
+          </a>
+        ))}
+      </section>
+
+      <section className="hook-questions" aria-labelledby="q-title">
+        <h2 id="q-title" className="hook-h2">気になる問いから読む</h2>
+        <ul>
+          {HOOK.questions.map((x) => (
+            <li key={x.q}>
+              <a href={`${BASE}/${x.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${x.id}/`); }}>
+                <span className="hook-q-icon"><SectionIcon name={x.icon} size={22} /></span>
+                <span className="hook-q-body">
+                  <span className="hook-q">{x.q}</span>
+                  <span className="hook-a">{x.a}</span>
+                  <span className="hook-more">{articles.find((a) => a.id === x.id)?.shortTitle} →</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <h2 className="hook-h2">記事をぜんぶ見る</h2>
       {GROUP_ORDER.map((group) => {
         const groupArticles = articles.filter((a) => a.group === group.key);
         if (groupArticles.length === 0) return null;
         return (
           <div key={group.key} id={`g-${group.slug}`} className="section-group">
             <div className="section-group-head">
-              <h2 className="section-group-label">
+              <h3 className="section-group-label">
                 <span className="section-group-emoji" aria-hidden="true"><SectionIcon name={group.icon} size={20} /></span>
                 {group.key}
-              </h2>
-              <p className="section-group-desc">{group.description}</p>
+              </h3>
             </div>
-            <div className="section-grid">
+            <ul className="title-list">
               {groupArticles.map((a) => (
-                <a key={a.id} href={`${BASE}/${a.id}/`} className="section-card" onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
-                  <div className="section-card-emoji" aria-hidden="true"><SectionIcon name={a.icon} size={26} /></div>
-                  <h3 className="section-card-title">{a.shortTitle}</h3>
-                  <p className="section-card-desc">{a.description}</p>
-                  <span className="section-card-cta">読む →</span>
-                </a>
+                <li key={a.id}>
+                  <a href={`${BASE}/${a.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
+                    <span className="title-list-icon"><SectionIcon name={a.icon} size={20} /></span>
+                    <span>{a.shortTitle}</span>
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         );
       })}
@@ -364,6 +390,12 @@ function ArticlePage({ article }: { article: Article }) {
           </div>
         </header>
         {article.lead && <p className="lead">{renderInline(article.lead)}</p>}
+        {ARTICLE_POINTS[article.id] && (
+          <aside className="points" aria-label="ざっくり3行">
+            <p className="points-label">ざっくり3行</p>
+            <ol>{ARTICLE_POINTS[article.id].map((p) => <li key={p}>{p}</li>)}</ol>
+          </aside>
+        )}
         <TOC items={article.toc} />
         <div className="section-content">{parseContent(article.content)}</div>
         {article.references && article.references.length > 0 && (
