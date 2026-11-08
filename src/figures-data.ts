@@ -325,7 +325,7 @@ function walkMinutesSvg(): string {
     { n: '亀戸天神社', m: 15, c: SHU },
     { n: '龍眼寺（萩寺）', m: 20, c: SHU },
   ];
-  const x0 = 14, k = 11, top = 40, rh = 40;
+  const x0 = 14, k = 11, top = 56, rh = 40;
   let g = '';
   for (const t of [5, 10, 15, 20]) {
     const x = x0 + t * k;
@@ -344,7 +344,7 @@ function walkMinutesSvg(): string {
   return (
     `<svg class="diagram-single" viewBox="0 0 340 ${ly + 18}" width="100%" role="img" aria-label="亀戸駅北口から6つの見どころまで歩く時間を並べた棒グラフ。梅屋敷と商店街が5分、升本が7分、香取神社が10分、天神社が15分、龍眼寺が20分">` +
     `<rect width="340" height="${ly + 18}" fill="${BG}"/>` +
-    `<text x="${x0}" y="14" font-size="12.5" font-weight="700" fill="${AI_DEEP}">JR亀戸駅北口から歩く時間</text>` +
+    `<text x="${x0}" y="16" font-size="12.5" font-weight="700" fill="${AI_DEEP}">JR亀戸駅北口から歩く時間</text>` +
     g + key(14, SHU, '社寺') + key(78, GOLD, '名物・商店') + key(178, AI, '施設') +
     `</svg>`
   );
