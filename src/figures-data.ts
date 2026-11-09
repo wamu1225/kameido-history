@@ -264,22 +264,31 @@ function toyokuniTimelineSvg(): string {
   );
 }
 
-// 11) 亀戸水神宮の年表
+// 11) 亀戸水神宮：祈りの記録と、水神の森が失われた時期（縦軸。1681年と1894年のあいだは省略）
 function suijinguTimelineSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const yUp = (yr: number) => 40 + (yr - 1521) * 0.9;      // 1521→40, 1681→184
+  const BRK = 232;                                         // 軸の省略記号の位置
+  const yLo = (yr: number) => 290 + (yr - 1894) * 5.4;     // 1894→290, 1960→646
+  const H = 690;
+  const dot = (y: number, c: string, hollow = false) =>
+    `<circle cx="34" cy="${y}" r="7" fill="${hollow ? BG : c}" stroke="${c}" stroke-width="2.4"/>`;
+  const head = (y: number, t: string) => `<text x="52" y="${y - 3}" font-size="13" font-weight="700" fill="${AI_DEEP}">${t}</text>`;
+  const sub = (y: number, t: string) => `<text x="52" y="${y + 13}" font-size="12" fill="${INK}">${t}</text>`;
+  const sub2 = (y: number, t: string) => `<text x="52" y="${y + 28}" font-size="12" fill="${INK}">${t}</text>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸水神宮の年表の図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(40, '16世紀前半', '水害よけに|水神を勧請（社伝）', AI) +
-    node(125, '延宝年間', '古地図に|記載を確認', SHU) +
-    node(200, '1945.3', '東京大空襲で|甚大な被害', SHU) +
-    node(260, '1960', '再建', GOLD) +
+    `<svg class="diagram-single" viewBox="0 0 340 ${H}" width="100%" role="img" aria-label="亀戸水神宮の記録を並べた縦の年表。16世紀前半の社伝、延宝年間の古地図、1894年以降の都市化で水神の森が失われたこと、1938年の由来碑、1945年の空襲、1960年の再建">` +
+    `<rect width="340" height="${H}" fill="${BG}"/>` +
+    `<line x1="34" y1="${yUp(1521)}" x2="34" y2="${BRK - 12}" stroke="${AI}" stroke-width="2"/>` +
+    `<line x1="34" y1="${BRK + 12}" x2="34" y2="${yLo(1960)}" stroke="${AI}" stroke-width="2"/>` +
+    `<path d="M26 ${BRK - 12} l16 6 M26 ${BRK - 4} l16 6 M26 ${BRK + 4} l16 6" stroke="${AI_DEEP}" stroke-width="1.6" fill="none"/>` +
+    `<text x="52" y="${BRK + 4}" font-size="11.5" fill="#6a6252">（1681年から1894年のあいだは省略）</text>` +
+    `<rect x="30" y="${yLo(1894)}" width="8" height="${yLo(1938) - yLo(1894)}" fill="${SHU}" opacity="0.55"/>` +
+    dot(yUp(1533), AI, true) + head(yUp(1533), '16世紀前半（社伝）') + sub(yUp(1533), '水害よけに水神を勧請したと伝わる') +
+    dot(yUp(1677), SHU) + head(yUp(1677), '延宝年間（1673〜81年）') + sub(yUp(1677), '古地図に、この社の記載がある') +
+    dot(yLo(1894), SHU) + head(yLo(1894), '1894年〜 日清・日露の戦役以後') + sub(yLo(1894), '工場が建ち、森の木が枯れていく') + sub2(yLo(1894), '（由来碑の記述）') +
+    dot(yLo(1938), AI) + head(yLo(1938), '1938年　由来碑を建立') + sub(yLo(1938), '松・杉の巨木と古い農家の記憶を刻む') +
+    dot(yLo(1945), SHU) + head(yLo(1945), '1945年3月　東京大空襲') + sub(yLo(1945), '大きな被害を受ける') +
+    dot(yLo(1960), GOLD) + head(yLo(1960), '1960年6月　再建') +
     `</svg>`
   );
 }
@@ -514,7 +523,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${toyokuniTimelineSvg()}</div>`,
   },
   'suijingu-timeline': {
-    caption: '亀戸水神宮の年表（模式図）。社伝では16世紀前半に水害よけの神を勧請したと伝わり、延宝年間（1673〜1681年）の古地図にも記載が確認されています。昭和20年（1945年）3月の東京大空襲で大きな被害を受けましたが、昭和35年（1960年）に再建されました。',
+    caption: '亀戸水神宮の記録の年表（模式図）。白抜きの丸は社伝、塗りの丸は古地図や碑など記録のある出来事です。1894年から1938年の赤い帯は、碑文に「戦役以後の都市化で樹木が枯れた」と書かれた時期で、年に比例した間隔で描いています。上の2点は目盛りが違い、間の約200年は省いています。',
     inner: `<div class="diagram-wrap">${suijinguTimelineSvg()}</div>`,
   },
   'kotsu-timeline': {
