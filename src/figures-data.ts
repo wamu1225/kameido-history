@@ -176,6 +176,41 @@ function umeyashikiSvg(): string {
   );
 }
 
+// 7b) 広重の亀戸二枚の「手前・奥」の対比（2026-11-11）
+function ukiyoeTwoViewsSvg(): string {
+  const panel = (x: number, title: string, season: string, front: string, back: string, scene: string) =>
+    `<g transform="translate(${x} 0)">` +
+    `<rect x="0" y="0" width="144" height="198" rx="3" fill="#fbf6e6" stroke="${AI}" stroke-width="1.2"/>` +
+    `<text x="72" y="18" font-size="12" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${title}</text>` +
+    `<text x="72" y="33" font-size="11" fill="${SHU}" text-anchor="middle">${season}</text>` +
+    `<svg x="8" y="42" width="128" height="96" viewBox="0 0 128 96">${scene}</svg>` +
+    `<text x="10" y="156" font-size="11" font-weight="700" fill="${SHU}">手前</text>` +
+    `<text x="40" y="156" font-size="11" fill="${INK}">${front}</text>` +
+    `<text x="10" y="178" font-size="11" font-weight="700" fill="${AI}">奥</text>` +
+    `<text x="40" y="178" font-size="11" fill="${INK}">${back}</text>` +
+    `</g>`;
+  const ume =
+    `<rect width="128" height="96" fill="#e9c9c6"/><rect width="128" height="22" fill="#c97f86"/>` +
+    `${[22, 40, 88, 106].map(x => `<line x1="${x}" y1="64" x2="${x}" y2="50" stroke="#6e7d4a" stroke-width="2.4"/><circle cx="${x}" cy="46" r="5" fill="#9bb06a"/>`).join('')}` +
+    `${[56, 66, 76].map(x => `<rect x="${x}" y="52" width="5" height="12" rx="2" fill="${AI}"/><circle cx="${x + 2.5}" cy="49" r="2.6" fill="#caa884"/>`).join('')}` +
+    `<line x1="0" y1="66" x2="128" y2="66" stroke="#5f7d3f" stroke-width="2.4"/>` +
+    `<path d="M-4 90 Q30 70 58 56 Q84 42 132 40" fill="none" stroke="#3a2a20" stroke-width="10" stroke-linecap="round"/>` +
+    `<path d="M52 58 Q66 38 64 14" fill="none" stroke="#3a2a20" stroke-width="5" stroke-linecap="round"/>` +
+    `${[[64, 20], [68, 34], [104, 36], [30, 76], [92, 44]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.6" fill="#fff"/><circle cx="${x}" cy="${y}" r="1.2" fill="${GOLD}"/>`).join('')}`;
+  const fuji =
+    `<rect width="128" height="96" fill="#dfe9ea"/><rect y="60" width="128" height="36" fill="#9fbac0"/>` +
+    `<path d="M26 66 Q64 14 102 66" fill="none" stroke="${SHU}" stroke-width="6" stroke-linecap="round"/>` +
+    `<line x1="40" y1="44" x2="40" y2="66" stroke="${SHU}" stroke-width="2"/><line x1="88" y1="44" x2="88" y2="66" stroke="${SHU}" stroke-width="2"/>` +
+    `${[10, 28, 46, 64, 82, 100, 118].map((x, i) => `<line x1="${x}" y1="0" x2="${x}" y2="${30 + (i % 3) * 8}" stroke="#7a5aa0" stroke-width="7" stroke-linecap="round"/><line x1="${x + 6}" y1="0" x2="${x + 6}" y2="${22 + ((i + 1) % 3) * 8}" stroke="#a58cc4" stroke-width="5" stroke-linecap="round"/>`).join('')}`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 198" width="100%" role="img" aria-label="広重が描いた亀戸の二枚を並べた図。梅屋舗は手前に梅の太枝、奥に梅林と梅見の人。天神境内は手前に垂れる藤、奥に太鼓橋と心字池">` +
+    `<rect width="300" height="198" fill="${BG}"/>` +
+    panel(4, '『亀戸梅屋舗』', '早春', '梅の太枝', '梅林と梅見の人', ume) +
+    panel(152, '『亀戸天神境内』', '初夏', '垂れる藤の花', '太鼓橋と心字池', fuji) +
+    `</svg>`
+  );
+}
+
 // 7) 時計の街の年表（1939 竣工 → 1993 移転 → 1997 サンストリート → 2022 カメイドクロック）
 function tokeiMachiTimelineSvg(): string {
   const node = (x: number, year: string, label: string, color: string) =>
@@ -501,6 +536,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'kuzumochi-process': {
     caption: '関東のくず餅の製法（模式図）。小麦のでんぷんを乳酸発酵させ、せいろで蒸し上げ、黒蜜ときな粉をかけて仕上げます。葛粉を使う関西の葛餅とは原料も作り方も異なります。',
     inner: `<div class="diagram-wrap">${kuzumochiProcessSvg()}</div>`,
+  },
+  'ukiyoe-two-views': {
+    caption: '広重が描いた亀戸の二枚（模式図）。梅屋舗は手前の梅の太枝ごしに奥の梅林を、天神境内は手前の藤ごしに奥の太鼓橋を見せます。季節は早春と初夏で、どちらも手前を大きく置く構図です。',
+    inner: `<div class="diagram-wrap">${ukiyoeTwoViewsSvg()}</div>`,
   },
   'umeyashiki-composition': {
     caption: '広重『亀戸梅屋舗』の構図（模式図）。画面の手前を横切るほど大きく梅の太い枝を配し、その枝のすき間から奥の梅林と梅見の人々をのぞかせる、遠近の常識をくつがえす大胆な近景構図です。',
