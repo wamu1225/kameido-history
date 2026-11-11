@@ -211,22 +211,27 @@ function ukiyoeTwoViewsSvg(): string {
   );
 }
 
-// 7) 時計の街の年表（1939 竣工 → 1993 移転 → 1997 サンストリート → 2022 カメイドクロック）
+// 7) 時計の街：同じ土地の使われ方を年に比例した帯で（1939〜2026）
 function tokeiMachiTimelineSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="11" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const X = (y: number) => Math.round((16 + (y - 1939) * 3.1) * 10) / 10;
+  const seg = (y1: number, y2: number, color: string) =>
+    `<rect x="${X(y1)}" y="32" width="${Math.round((X(y2) - X(y1)) * 10) / 10}" height="22" fill="${color}"/>`;
+  const gap = (y1: number, y2: number) =>
+    `<rect x="${X(y1)}" y="32" width="${Math.round((X(y2) - X(y1)) * 10) / 10}" height="22" fill="none" stroke="${INK}" stroke-width="1" stroke-dasharray="2 2"/>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="第二精工舎からカメイドクロックまで、同じ土地の変遷の図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(40, '1939', '第二精工舎|本社工場竣工', AI) +
-    node(125, '1993', '本社移転|(千葉・幕張)', SHU) +
-    node(200, '1997-2016', 'サンストリート|亀戸', GOLD) +
-    node(260, '2022', 'カメイド|クロック開業', AI) +
+    `<svg class="diagram-single" viewBox="0 0 300 130" width="100%" role="img" aria-label="亀戸の同じ土地の使われ方を年に比例した帯で並べた図。第二精工舎の本社工場が54年、サンストリート亀戸が19年、カメイドクロックは2022年から">` +
+    `<rect width="300" height="130" fill="${BG}"/>` +
+    `<text x="${X(1939)}" y="24" font-size="11.5" font-weight="700" fill="${AI_DEEP}">1939</text>` +
+    `<text x="296" y="14" font-size="11.5" font-weight="700" fill="${SHU}" text-anchor="end">2022〜 カメイドクロック</text>` +
+    `<line x1="${X(2024)}" y1="18" x2="${X(2024)}" y2="32" stroke="${SHU}" stroke-width="1.4"/>` +
+    seg(1939, 1993, AI) + gap(1993, 1997) + seg(1997, 2016, GOLD) + gap(2016, 2022) + seg(2022, 2026, SHU) +
+    `<text x="${(X(1939) + X(1993)) / 2}" y="47" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">工場 54年</text>` +
+    `<text x="${(X(1997) + X(2016)) / 2}" y="47" font-size="11.5" font-weight="700" fill="${INK}" text-anchor="middle">19年</text>` +
+    `<text x="${(X(1939) + X(1993)) / 2}" y="72" font-size="11.5" fill="${INK}" text-anchor="middle">第二精工舎の本社工場</text>` +
+    `<text x="${(X(1939) + X(1993)) / 2}" y="86" font-size="11" fill="${INK}" text-anchor="middle">1939〜1993</text>` +
+    `<text x="${(X(1997) + X(2016)) / 2 + 12}" y="72" font-size="11.5" fill="${INK}" text-anchor="middle">サンストリート亀戸</text>` +
+    `<text x="${(X(1997) + X(2016)) / 2 + 12}" y="86" font-size="11" fill="${INK}" text-anchor="middle">1997〜2016</text>` +
+    `<text x="16" y="116" font-size="11" fill="${INK}">点線＝次の施設ができるまでの期間（1993〜97年・2016〜22年）</text>` +
     `</svg>`
   );
 }
@@ -546,7 +551,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${umeyashikiSvg()}</div>`,
   },
   'tokei-machi-timeline': {
-    caption: '同じ土地の変遷（模式図）。1939年に竣工した第二精工舎の本社工場は、1993年の本社移転後も工場として使われ、跡地は1997年にサンストリート亀戸、2016年の閉館を経て2022年にカメイドクロックへと変わりました。',
+    caption: '同じ土地の使われ方（帯の長さは年数に比例）。時計の工場は54年、その跡のサンストリート亀戸は19年、カメイドクロックはまだ4年です。商業施設の2つ分を足しても、工場の時代には届きません。',
     inner: `<div class="diagram-wrap">${tokeiMachiTimelineSvg()}</div>`,
   },
   'joto-koto-merge': {
