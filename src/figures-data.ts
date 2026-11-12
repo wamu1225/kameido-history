@@ -400,21 +400,28 @@ function walkMinutesSvg(): string {
   );
 }
 
-// 13) 亀戸銭座の年表
+// 13) 亀戸銭座：存続した期間と文銭を鋳造した期間を、年に比例した帯で（1660〜1780）
 function zenizaTimelineSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const X = (y: number) => Math.round((16 + (y - 1660) * 2.2) * 10) / 10;
+  const W = (y1: number, y2: number) => Math.round((X(y2) - X(y1)) * 10) / 10;
+  const ticks = [1660, 1700, 1740, 1780]
+    .map((y) => `<line x1="${X(y)}" y1="22" x2="${X(y)}" y2="29" stroke="${AI_DEEP}" stroke-width="1"/><text x="${X(y)}" y="16" font-size="11" fill="${AI_DEEP}" text-anchor="${y === 1780 ? 'end' : y === 1660 ? 'start' : 'middle'}">${y}</text>`)
+    .join('');
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="亀戸銭座の年表の図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(40, '1671以前', '芝網縄手から|亀戸へ移転', AI) +
-    node(153, '1668〜83', '「文銭」を|鋳造', SHU) +
-    node(260, '1773', '廃止（安永2年）', GOLD) +
+    `<svg class="diagram-single" viewBox="0 0 300 150" width="100%" role="img" aria-label="亀戸銭座の期間を年に比例した帯で並べた図。銭座は1671年の江戸図にすでに載り、1773年に廃止されるまで102年以上。寛永通宝の文銭を鋳造したのは1668年から1683年の15年間">` +
+    `<defs><linearGradient id="zf" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="${AI}" stop-opacity="0"/><stop offset="1" stop-color="${AI}"/></linearGradient></defs>` +
+    `<rect width="300" height="150" fill="${BG}"/>` +
+    `<line x1="${X(1660)}" y1="29" x2="${X(1780)}" y2="29" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    ticks +
+    `<text x="16" y="48" font-size="11.5" font-weight="700" fill="${AI_DEEP}">銭座があった期間　102年以上</text>` +
+    `<rect x="${X(1660)}" y="54" width="${W(1660, 1671)}" height="12" fill="url(#zf)"/>` +
+    `<rect x="${X(1671)}" y="54" width="${W(1671, 1773)}" height="12" fill="${AI}"/>` +
+    `<text x="16" y="92" font-size="11.5" font-weight="700" fill="${SHU}">「文銭」を鋳造した期間　15年</text>` +
+    `<rect x="${X(1668)}" y="98" width="${W(1668, 1683)}" height="12" fill="${SHU}"/>` +
+    `<line x1="${X(1671)}" y1="50" x2="${X(1671)}" y2="116" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="3 2"/>` +
+    `<line x1="${X(1773)}" y1="50" x2="${X(1773)}" y2="116" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="3 2"/>` +
+    `<text x="${X(1671) + 3}" y="130" font-size="11" fill="${INK}">1671 江戸図に記載</text>` +
+    `<text x="${X(1773)}" y="144" font-size="11" fill="${INK}" text-anchor="end">1773 廃止（安永2年）</text>` +
     `</svg>`
   );
 }
@@ -584,7 +591,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${walkMinutesSvg()}</div>`,
   },
   'zeniza-timeline': {
-    caption: '亀戸銭座の年表（模式図）。寛文11年（1671年）の江戸図にすでに記載があり、芝網縄手（現在の港区）から移転してきたと伝わります。寛文8年（1668年）から天和3年（1683年）には裏面に「文」の字を鋳込んだ寛永通宝「文銭」が鋳造されました。安永2年（1773年）に廃止されたと伝わります。',
+    caption: '帯の長さは年数に比例。左端のかすみは、操業を始めた年が分からない期間です。文銭を作った15年は、銭座が続いた期間の7分の1ほどにあたります。',
     inner: `<div class="diagram-wrap">${zenizaTimelineSvg()}</div>`,
   },
 };
