@@ -525,6 +525,31 @@ function meibutsuSvg(): string {
 }
 
 // figure id → { caption, innerHtml }
+// 14) 亀戸事件：震災から公表までを日付に比例した帯で（1923-09-01〜10-10）
+function jikenSilenceSvg(): string {
+  const X = (d: number) => Math.round((16 + d * (268 / 39)) * 10) / 10;
+  const W = (a: number, b: number) => Math.round((X(b) - X(a)) * 10) / 10;
+  const ticks = [[0, '9/1', 'start'], [14, '9/15', 'middle'], [30, '10/1', 'middle'], [39, '10/10', 'end']]
+    .map(([d, t, a]) => `<line x1="${X(d as number)}" y1="22" x2="${X(d as number)}" y2="29" stroke="${AI_DEEP}" stroke-width="1"/><text x="${X(d as number)}" y="16" font-size="11" fill="${AI_DEEP}" text-anchor="${a}">${t}</text>`)
+    .join('');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 130" width="100%" role="img" aria-label="1923年9月1日から10月10日までを日付に比例した帯で並べた図。9月3日夜から5日未明にかけて10人が殺害され、事件は10月10日まで公表されなかった">` +
+    `<rect width="300" height="130" fill="${BG}"/>` +
+    `<line x1="${X(0)}" y1="29" x2="${X(39)}" y2="29" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    ticks +
+    `<text x="16" y="48" font-size="11.5" font-weight="700" fill="${AI_DEEP}">殺害から公表まで　1か月以上</text>` +
+    `<rect x="${X(4.3)}" y="54" width="${W(4.3, 39)}" height="12" fill="${AI}" fill-opacity="0.45"/>` +
+    `<rect x="${X(2)}" y="54" width="${W(2, 4.3)}" height="12" fill="${SHU}"/>` +
+    `<line x1="${X(0)}" y1="50" x2="${X(0)}" y2="116" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="3 2"/>` +
+    `<line x1="${X(39)}" y1="50" x2="${X(39)}" y2="116" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="3 2"/>` +
+    `<text x="${X(2)}" y="84" font-size="11" font-weight="700" fill="${SHU}">殺害　9/3夜〜5日未明</text>` +
+    `<text x="${X(2)}" y="97" font-size="11" fill="${INK}">（日時は証言と発表で異なる）</text>` +
+    `<text x="${X(0) + 4}" y="124" font-size="11" fill="${INK}">9/1 関東大震災</text>` +
+    `<text x="${X(39) - 4}" y="124" font-size="11" fill="${INK}" text-anchor="end">10/10 公表</text>` +
+    `</svg>`
+  );
+}
+
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'meibutsu-timeline': {
     caption: '亀戸の名物が生まれた年（縦の長さは年に比例）。江戸時代の二つから昭和の餃子まで約150年、ホルモン店はそのさらに約半世紀後です。',
@@ -593,6 +618,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'zeniza-timeline': {
     caption: '帯の長さは年数に比例。左端のかすみは、操業を始めた年が分からない期間です。文銭を作った15年は、銭座が続いた期間の7分の1ほどにあたります。',
     inner: `<div class="diagram-wrap">${zenizaTimelineSvg()}</div>`,
+  },
+  'jiken-silence': {
+    caption: '帯の長さは日数に比例（1923年9月1日〜10月10日）。赤い帯は殺害の日で、証言の9月3日夜と警察発表の4日夜〜5日未明の両方を含みます。右の青い帯は、事件が公表されるまでの期間です。',
+    inner: `<div class="diagram-wrap">${jikenSilenceSvg()}</div>`,
   },
 };
 
