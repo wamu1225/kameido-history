@@ -620,7 +620,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${zenizaTimelineSvg()}</div>`,
   },
   'jiken-silence': {
-    caption: '帯の長さは日数に比例（1923年9月1日〜10月10日）。赤い帯は殺害の日で、証言の9月3日夜と警察発表の4日夜〜5日未明の両方を含みます。右の青い帯は、事件が公表されるまでの期間です。',
+    caption: '帯の長さは日数に比例（1923年9月1日〜10月10日）。赤い帯は殺害の日で、証言の9月3日夜と警察発表の4日夜〜5日未明の両方を含みます。右の灰色の帯は、事件が公表されるまでの期間です。',
     inner: `<div class="diagram-wrap">${jikenSilenceSvg()}</div>`,
   },
 };
