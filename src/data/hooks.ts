@@ -16,7 +16,7 @@ export const HOOK: { catch: string; sub: string; numbers: HookNumber[]; question
     { n: '3.4', unit: 'km', label: '曳舟から亀戸まで、2両編成の東武亀戸線', id: 'kotsu', icon: 'train-front' },
   ],
   questions: [
-    { q: 'なぜ「亀戸」という名前？', a: '亀の形の島、亀ヶ井という古井戸など、説が3つあって1つに決まっていません。', id: 'name-origin', icon: 'map-pin' },
+    { q: 'ゴッホが写した梅は、いまも見られる？', a: '梅屋敷は1910年の水害で廃園になりました。跡地の亀戸3丁目に碑が立っています。', id: 'ukiyoe', icon: 'image' },
     { q: 'くず餅なのに、葛ではない？', a: '関東のくず餅は、小麦のでんぷんを発酵させて蒸したお菓子です。', id: 'kuzumochi', icon: 'plate' },
     { q: 'カメイドクロックの名の由来？', a: 'この土地に半世紀以上あった時計会社、第二精工舎にちなむ名前です。', id: 'tokei-machi', icon: 'clock-3' },
     { q: '香取勝運商店街は、昭和からある街並み？', a: '「昭和30年代」の街並みは、平成23年（2011年）につくられたものです。', id: 'katori-shotengai', icon: 'store' },

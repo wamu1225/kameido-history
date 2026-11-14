@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { articles } from '../src/data/articles.ts';
 import type { Article } from '../src/data/articles.ts';
-import { figureHtml, heroSceneSvg } from '../src/figures-data.ts';
+import { figureHtml, heroSceneSvg, ARTICLE_HERO } from '../src/figures-data.ts';
 import { HOOK, ARTICLE_POINTS } from '../src/data/hooks.ts';
 import { referencesHtml } from '../src/references.ts';
 import { sectionIconSvg } from '../src/section-icons.ts';
@@ -154,7 +154,7 @@ const groupListHtml = GROUP_ORDER
   .map((group) => {
     const items = articles
       .filter((a) => a.group === group.key)
-      .map((a) => `<li style="margin-bottom:8px">${ico(a.icon, 16, SHU)} <a href="/kameido-history/${a.id}/" style="color:${AI};font-weight:600;text-decoration:none">${escapeHtml(a.shortTitle)}</a></li>`)
+      .map((a) => `<li style="margin-bottom:8px">${ico(a.icon, 16, SHU)} <a href="/kameido-history/${a.id}/" style="color:${AI};font-weight:600;text-decoration:none">${escapeHtml(a.shortTitle)}</a>${ARTICLE_POINTS[a.id] ? `<br><span style="font-size:0.86rem;color:#555">${escapeHtml(ARTICLE_POINTS[a.id][0])}</span>` : ''}</li>`)
       .join('\n');
     if (!items) return '';
     return `<div style="margin:24px 0 16px"><div style="font-size:0.95rem;color:${AI_DEEP};font-weight:700;margin-bottom:10px;border-left:4px solid ${SHU};padding-left:10px">${ico(group.icon, 15)} ${escapeHtml(group.key)}</div><ul style="list-style:none;padding:0 0 0 14px;margin:0">${items}</ul></div>`;
@@ -169,7 +169,7 @@ const rootStaticContent = `<article id="static-fallback" style="font-family:'Hir
   <ul style="padding-left:18px;margin:18px 0">${HOOK.numbers.map((x) => `<li><a href="/kameido-history/${x.id}/" style="color:${SHU}"><strong>${escapeHtml(x.n + x.unit)}</strong></a>：${escapeHtml(x.label)}</li>`).join('')}</ul>
   <h2 style="font-size:1.2rem;color:${AI_DEEP};margin:24px 0 8px">気になる問いから読む</h2>
   <ul style="padding-left:18px">${HOOK.questions.map((x) => `<li style="margin-bottom:8px"><a href="/kameido-history/${x.id}/" style="color:${AI}"><strong>${escapeHtml(x.q)}</strong></a> ${escapeHtml(x.a)}</li>`).join('')}</ul>
-  <h2 style="font-size:1.2rem;color:${AI_DEEP};margin:24px 0 8px">記事をぜんぶ見る</h2>
+  <h2 style="font-size:1.2rem;color:${AI_DEEP};margin:24px 0 8px">分野ごとに読む（全${articles.length}本）</h2>
 ${groupListHtml}
   <nav style="margin-top:32px;border-top:1px solid #ddd;padding-top:16px;display:flex;gap:16px;flex-wrap:wrap">
     <a href="/kameido-history/about/" style="color:${AI}">サイトについて</a>
@@ -236,6 +236,7 @@ function buildArticleFallback(a: Article): string {
   const contentHtml = markdownToHtml(a.content);
   const chapterNavHtml = buildChapterNav(a.id);
   const leadHtml = a.lead ? `<p class="lead" style="color:#555;font-size:1.04rem;margin:16px 0 24px">${inlineToHtml(a.lead)}</p>` : '';
+  const heroHtml = ARTICLE_HERO[a.id] ? `<div style="border:1px solid #e2dccb;border-radius:12px;overflow:hidden;line-height:0;margin:0 0 20px">${ARTICLE_HERO[a.id]()}</div>` : '';
   const pts = ARTICLE_POINTS[a.id];
   const pointsHtml = pts
     ? `<aside style="margin:0 0 22px;padding:12px 16px;background:#fffdf8;border:2px solid ${SHU};border-radius:8px" aria-label="ざっくり3行"><p style="margin:0 0 4px;font-weight:700;color:${SHU};font-size:0.85rem">ざっくり3行</p><ol style="margin:0;padding-left:1.3em">${pts.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ol></aside>`
@@ -248,6 +249,7 @@ function buildArticleFallback(a: Article): string {
     <div style="font-size:0.85rem;color:#6b7280;margin-top:10px">最終更新: ${formatDateJa(a.updatedAt)}</div>
   </header>
   ${leadHtml}
+  ${heroHtml}
   ${pointsHtml}
   ${tocHtml}
   <div class="section-content">

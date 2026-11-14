@@ -639,7 +639,7 @@ JA東京中央会の資料によれば、亀戸大根の栽培は**文久年間�
 - 梅屋敷は明治43年（1910年）の水害で廃園。跡地の亀戸3丁目には「梅屋敷跡」の碑が残る
 - 『亀戸天神境内』は藤と太鼓橋を描く
 `,
-    updatedAt: '2026-11-11',
+    updatedAt: '2026-11-14',
     references: [REF.fujibi, REF.kotoKankoUmeyashikiAto],
   },
 

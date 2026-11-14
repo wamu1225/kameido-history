@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { ArrowLeft, List, ChevronRight, Menu, X, Calendar } from 'lucide-react';
 import { articles } from './data/articles';
 import type { Article } from './data/articles';
-import { figureHtml, heroSceneSvg } from './figures-data';
+import { figureHtml, heroSceneSvg, ARTICLE_HERO } from './figures-data';
 import { HOOK, ARTICLE_POINTS } from './data/hooks';
 import { referencesHtml } from './references';
 import { sectionIconSvg } from './section-icons';
@@ -262,7 +262,7 @@ function Home() {
         </ul>
       </section>
 
-      <h2 className="hook-h2">記事をぜんぶ見る</h2>
+      <h2 className="hook-h2">分野ごとに読む（全{articles.length}本）</h2>
       {GROUP_ORDER.map((group) => {
         const groupArticles = articles.filter((a) => a.group === group.key);
         if (groupArticles.length === 0) return null;
@@ -279,7 +279,10 @@ function Home() {
                 <li key={a.id}>
                   <a href={`${BASE}/${a.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
                     <span className="title-list-icon"><SectionIcon name={a.icon} size={20} /></span>
-                    <span>{a.shortTitle}</span>
+                    <span className="title-list-body">
+                      <span className="title-list-title">{a.shortTitle}</span>
+                      {ARTICLE_POINTS[a.id] && <span className="title-list-fact">{ARTICLE_POINTS[a.id][0]}</span>}
+                    </span>
                   </a>
                 </li>
               ))}
@@ -390,6 +393,7 @@ function ArticlePage({ article }: { article: Article }) {
           </div>
         </header>
         {article.lead && <p className="lead">{renderInline(article.lead)}</p>}
+        {ARTICLE_HERO[article.id] && <div className="hook-scene article-hero" dangerouslySetInnerHTML={{ __html: ARTICLE_HERO[article.id]() }} />}
         {ARTICLE_POINTS[article.id] && (
           <aside className="points" aria-label="ざっくり3行">
             <p className="points-label">ざっくり3行</p>

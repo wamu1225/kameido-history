@@ -637,53 +637,44 @@ export function figureHtml(id: string): string | null {
 // トップの絵（2026-11-08）：亀戸天神社の心字池にかかる朱の太鼓橋、手前上に垂れる藤棚、奥に東京スカイツリー（模式図）。
 // 文字は入れない（小さな文字が 390px 幅で読めなくなるため）。説明は aria-label に持たせる。
 export function heroSceneSvg(): string {
-  const fuji = [14, 36, 58, 80, 102, 124, 146, 168, 190, 212, 234, 256, 278, 300, 322, 344]
-    .map((x, i) => {
-      const len = [34, 46, 28, 52, 38, 30, 44, 26, 40, 32, 48, 30, 36, 50, 28, 42][i];
-      let dots = '';
-      for (let y = 20; y < 20 + len; y += 7) {
-        const r = 4.2 - ((y - 20) / len) * 2;
-        dots += `<circle cx="${x + ((y / 7) % 2 ? 1.5 : -1.5)}" cy="${y}" r="${r.toFixed(1)}" fill="${y % 14 ? '#8a6fbf' : '#a48fd0'}"/>`;
-      }
-      return dots;
-    })
-    .join('');
+  // トップの絵：見出し「ゴッホが油絵で写した浮世絵、描かれたのは亀戸の梅」をそのまま見せる。
+  // 左＝広重の版画の構図（手前を太い梅の幹が横切り、奥に梅林）を淡い色で、右＝同じ構図を油絵の濃い色で。
+  // 実物の写しではなく、構図を伝える模式的な絵です。
+  const frame = (x: number, id: string, c: { sky1: string; sky2: string; ground: string; trunk: string; far: string; bloom: string; border: string; bw: number }) => {
+    const y = 14, w = 150, h = 150;
+    const blooms = [[30, 96], [44, 78], [58, 88], [66, 60], [84, 70], [92, 46], [108, 58], [120, 38], [132, 52], [140, 30], [52, 110], [76, 96], [100, 84], [124, 72]]
+      .map(([bx, by], k) => `<circle cx="${x + bx}" cy="${y + by}" r="${k % 3 === 0 ? 4.2 : 3.2}" fill="${c.bloom}"/>`).join('');
+    const farTrees = [18, 46, 74, 102, 130].map((tx) => `<path d="M${x + tx} ${y + 118} q4 -16 -3 -26 M${x + tx} ${y + 104} q8 -6 12 -14 M${x + tx} ${y + 108} q-8 -4 -11 -12" fill="none" stroke="${c.far}" stroke-width="2" stroke-linecap="round"/>`).join('');
+    const people = [36, 60, 112].map((px) => `<circle cx="${x + px}" cy="${y + 116}" r="2.2" fill="${c.far}"/><path d="M${x + px - 2.5} ${y + 126} l2.5 -8 l2.5 8 z" fill="${c.far}"/>`).join('');
+    return `<defs><clipPath id="${id}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/></clipPath>
+      <linearGradient id="${id}-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.sky1}"/><stop offset="0.62" stop-color="${c.sky2}"/></linearGradient></defs>
+      <g clip-path="url(#${id})">
+        <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${id}-sky)"/>
+        <rect x="${x}" y="${y + 118}" width="${w}" height="${h - 118}" fill="${c.ground}"/>
+        ${farTrees}${people}
+        <path d="M${x - 6} ${y + 150} C${x + 26} ${y + 128}, ${x + 30} ${y + 96}, ${x + 62} ${y + 82} S${x + 118} ${y + 52}, ${x + 156} ${y + 22}" fill="none" stroke="${c.trunk}" stroke-width="15" stroke-linecap="round"/>
+        <path d="M${x + 40} ${y + 100} C${x + 44} ${y + 70}, ${x + 30} ${y + 52}, ${x + 34} ${y + 22} M${x + 86} ${y + 70} C${x + 96} ${y + 96}, ${x + 112} ${y + 104}, ${x + 122} ${y + 136} M${x + 104} ${y + 58} C${x + 100} ${y + 38}, ${x + 108} ${y + 26}, ${x + 104} ${y + 14}" fill="none" stroke="${c.trunk}" stroke-width="5" stroke-linecap="round"/>
+        ${blooms}
+      </g>
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="none" stroke="${c.border}" stroke-width="${c.bw}"/>`;
+  };
   return (
-    `<svg viewBox="0 0 360 210" width="100%" role="img" aria-label="亀戸天神社の景色の模式的な絵。心字池に朱塗りの太鼓橋が大きく反ってかかり、手前の上には藤棚から藤の花が垂れ、奥に東京スカイツリーが立っています">` +
-    `<rect width="360" height="210" fill="#e7eef4"/>` +
-    // スカイツリー（奥・右寄り）
-    `<path d="M284 150 L292 58 L296 58 L304 150 Z" fill="#9fb4c6"/>` +
-    `<rect x="286" y="86" width="16" height="7" rx="2" fill="#8aa1b6"/>` +
-    `<rect x="289" y="64" width="10" height="5" rx="2" fill="#8aa1b6"/>` +
-    `<line x1="294" y1="34" x2="294" y2="60" stroke="#9fb4c6" stroke-width="2.5"/>` +
-    // 本殿の屋根（奥・左寄り）と木立
-    `<path d="M40 150 V128 H112 V150 Z" fill="#e9dcc3"/>` +
-    `<path d="M30 130 Q76 106 122 130 Z" fill="${AI}"/>` +
-    `<rect x="72" y="112" width="8" height="5" fill="${GOLD}"/>` +
-    `<path d="M0 150 Q10 128 24 140 Q30 124 40 142 V150 Z" fill="#7d8f5a"/>` +
-    `<path d="M122 150 Q132 130 146 142 Q156 128 168 146 L250 150 Q262 132 276 146 V150 Z" fill="#7d8f5a"/>` +
-    `<path d="M310 150 Q322 130 336 142 Q346 128 360 140 V150 Z" fill="#7d8f5a"/>` +
-    // 心字池
-    `<rect x="0" y="150" width="360" height="60" fill="#bcd6e8"/>` +
-    `<path d="M20 186 h40 M130 198 h50 M250 190 h44 M300 202 h40" stroke="#dbe9f2" stroke-width="2"/>` +
-    // 太鼓橋の映り込み
-    `<path d="M60 160 Q180 214 300 160" fill="none" stroke="#cf9c90" stroke-width="5" opacity="0.5"/>` +
-    // 太鼓橋（朱）
-    `<path d="M60 160 Q180 54 300 160" fill="none" stroke="${SHU}" stroke-width="10" stroke-linecap="round"/>` +
-    `<path d="M66 146 Q180 46 294 146" fill="none" stroke="${SHU}" stroke-width="3"/>` +
-    [96, 128, 160, 200, 232, 264].map((x) => {
-      const t = (x - 60) / 240;
-      const yTop = (1 - t) * (1 - t) * 146 + 2 * (1 - t) * t * 46 + t * t * 146;
-      const yBot = (1 - t) * (1 - t) * 160 + 2 * (1 - t) * t * 54 + t * t * 160;
-      return `<line x1="${x}" y1="${yTop.toFixed(1)}" x2="${x}" y2="${yBot.toFixed(1)}" stroke="${SHU}" stroke-width="3"/>`;
-    }).join('') +
-    `<circle cx="180" cy="${(0.25 * 146 + 0.5 * 46 + 0.25 * 146 - 4).toFixed(1)}" r="3" fill="${GOLD}"/>` +
-    // 藤棚（手前・上）
-    `<rect x="0" y="10" width="360" height="5" fill="#6e5a3a"/>` +
-    `<path d="M0 16 Q20 22 40 16 T80 16 T120 16 T160 16 T200 16 T240 16 T280 16 T320 16 T360 16" fill="none" stroke="#6e7d4a" stroke-width="5"/>` +
-    fuji +
-    `<rect x="4" y="10" width="5" height="200" fill="#6e5a3a"/>` +
-    `<rect x="351" y="10" width="5" height="200" fill="#6e5a3a"/>` +
+    `<svg viewBox="0 0 360 210" width="100%" role="img" aria-label="同じ構図の梅の絵が2枚並ぶ模式的な絵。左は歌川広重の版画『亀戸梅屋舗』の構図で、手前を太い梅の幹が横切り、奥に梅林と見物の人が小さく見えます。右はそれをゴッホが油絵で模写したもので、同じ構図が濃い色で描かれています。">` +
+    `<rect width="360" height="210" fill="#f3ecdc"/>` +
+    frame(14, 'hs-l', { sky1: '#d98f80', sky2: '#f6efe2', ground: '#9aae84', trunk: '#4a3f3a', far: '#7a6a5c', bloom: '#ffffff', border: '#b9ad94', bw: 1.5 }) +
+    frame(196, 'hs-r', { sky1: '#c23f24', sky2: '#f1c24a', ground: '#2f7044', trunk: '#2b2320', far: '#1f4a30', bloom: '#fff6d8', border: '#dd7a22', bw: 6 }) +
+    // 版画から油絵へ
+    `<path d="M171 86 h14" stroke="${AI}" stroke-width="2.5" stroke-linecap="round"/><path d="M182 80 l8 6 l-8 6 z" fill="${AI}"/>` +
+    `<text x="89" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="${AI}">広重の版画</text>` +
+    `<text x="89" y="202" text-anchor="middle" font-size="12" fill="#5b5346">1857年ごろ・亀戸の梅屋敷</text>` +
+    `<text x="271" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="${AI}">ゴッホの油絵</text>` +
+    `<text x="271" y="202" text-anchor="middle" font-size="12" fill="#5b5346">広重の絵をもとに模写</text>` +
     `</svg>`
   );
 }
+
+// 記事の最初の画面に出す絵（題とリードの直後）。記事の主題そのものを見せる絵だけを登録します。
+// 無い記事は絵なしのまま（本文の図が先に出ます）。足すときは、その記事の本文にある事実だけで描きます。
+export const ARTICLE_HERO: Record<string, () => string> = {
+  ukiyoe: heroSceneSvg,
+};
