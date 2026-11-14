@@ -426,6 +426,55 @@ function zenizaTimelineSvg(): string {
   );
 }
 
+// 15) 亀戸大根：栽培の場所・呼び名・「幻」の時期を、年に比例した帯で（1860〜2020）
+function daikonTimelineSvg(): string {
+  const X = (y: number) => Math.round((16 + (y - 1860) * 1.75) * 10) / 10;
+  const W = (y1: number, y2: number) => Math.round((X(y2) - X(y1)) * 10) / 10;
+  const ticks = [1860, 1900, 1940, 1980, 2020]
+    .map((y) => `<line x1="${X(y)}" y1="22" x2="${X(y)}" y2="29" stroke="${AI_DEEP}" stroke-width="1"/><text x="${X(y)}" y="16" font-size="11" fill="${AI_DEEP}" text-anchor="${y === 2020 ? 'end' : y === 1860 ? 'start' : 'middle'}">${y}</text>`)
+    .join('');
+  const row = (y: number, label: string, x1: number, x2: number, fill: string) =>
+    `<text x="16" y="${y}" font-size="11.5" font-weight="700" fill="${AI_DEEP}">${label}</text><rect x="${X(x1)}" y="${y + 6}" width="${W(x1, x2)}" height="12" fill="${fill}"/>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 196" width="100%" role="img" aria-label="亀戸大根の歩みを年に比例した帯で並べた図。1861年ごろから昭和初期まで香取神社の周辺で栽培、明治のころはおかめ大根・お多福大根、大正初めから亀戸大根、昭和の高度成長期に幻のだいこんと呼ばれ、2011年に江戸川区の農家が栽培を始めた">` +
+    `<defs><linearGradient id="df" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="${AI}"/><stop offset="1" stop-color="${AI}" stop-opacity="0"/></linearGradient></defs>` +
+    `<rect width="300" height="196" fill="${BG}"/>` +
+    `<line x1="${X(1860)}" y1="29" x2="${X(2020)}" y2="29" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    ticks +
+    `<text x="16" y="48" font-size="11.5" font-weight="700" fill="${AI_DEEP}">香取神社の周辺で栽培（昭和初期まで）</text>` +
+    `<rect x="${X(1861)}" y="54" width="${W(1861, 1935)}" height="12" fill="url(#df)"/>` +
+    row(86, '明治：おかめ大根・お多福大根', 1868, 1912, GOLD) +
+    row(116, '大正初めから：亀戸大根', 1912, 2020, SHU) +
+    row(146, '高度成長期：「幻のだいこん」', 1955, 1973, AI_DEEP) +
+    `<line x1="${X(2011)}" y1="120" x2="${X(2011)}" y2="170" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="3 2"/>` +
+    `<text x="${X(2011)}" y="186" font-size="11" fill="${INK}" text-anchor="end">2011 江戸川区の農家が栽培を始める</text>` +
+    `</svg>`
+  );
+}
+
+// 16) 亀戸大根：作付けの暦（江戸川区の1軒の温室栽培の例。種まき9月ごろ・収穫11月〜4月ごろ）
+function daikonCalendarSvg(): string {
+  const months = [9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8];
+  const cw = 23;
+  const x0 = 12;
+  const cells = months
+    .map((m, i) => `<text x="${x0 + i * cw + cw / 2}" y="40" font-size="11" fill="${AI_DEEP}" text-anchor="middle">${m}</text>`)
+    .join('');
+  const bar = (i1: number, i2: number, y: number, fill: string) =>
+    `<rect x="${x0 + i1 * cw + 1}" y="${y}" width="${(i2 - i1 + 1) * cw - 2}" height="14" fill="${fill}"/>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 140" width="100%" role="img" aria-label="亀戸大根の作付けの暦。9月ごろに種をまき、収穫は11月から4月ごろまで。福分けまつりは3月">` +
+    `<rect width="300" height="140" fill="${BG}"/>` +
+    `<text x="${x0}" y="18" font-size="12" font-weight="700" fill="${AI_DEEP}">亀戸大根の1年（月）</text>` +
+    cells +
+    `<line x1="${x0}" y1="46" x2="${x0 + 12 * cw}" y2="46" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    `<text x="${x0}" y="64" font-size="11" fill="${INK}">種まき（9月ごろ）</text>` + bar(0, 0, 70, AI) +
+    `<text x="${x0}" y="104" font-size="11" fill="${INK}">収穫（11月〜4月ごろ）</text>` + bar(2, 7, 110, SHU) +
+    `<path d="M${x0 + 6 * cw + cw / 2} 108 v-10" stroke="${GOLD}" stroke-width="2"/><text x="${x0 + 6 * cw + cw / 2}" y="95" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">福分けまつり</text>` +
+    `</svg>`
+  );
+}
+
 // 歴史の年表（17の出来事を4つの時代に分けた縦の年表。社伝・伝承は白抜きの丸、記録のある出来事は塗りの丸）
 function historyTimelineSvg(): string {
   type Ev = { y: string; l: string[]; t?: boolean };
@@ -570,6 +619,14 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'daikon-shape': {
     caption: '亀戸大根と一般的な青首大根の比較（模式図）。亀戸大根は長さ約30cmと小ぶりで、首まで白いのが特徴です。一般的な青首大根は大ぶりで、上部が緑色になります。寸法は目安です。',
     inner: `<div class="diagram-wrap">${daikonShapeSvg()}</div>`,
+  },
+  'daikon-timeline': {
+    caption: '帯の長さは年に比例。かすむ右端は、終わった年がはっきりしない栽培の期間です。最初の栽培は1860〜1864年（文久年間）とされ、ここでは1861年に置いています。昭和の高度成長期の帯は、時期の目安です。',
+    inner: `<div class="diagram-wrap">${daikonTimelineSvg()}</div>`,
+  },
+  'daikon-calendar': {
+    caption: '江戸川区で亀戸大根を温室で育てる農家の例（農林水産省の記事）。畑や年によって時期は前後します。福分けまつりは毎年3月、収穫の最中にあたります。',
+    inner: `<div class="diagram-wrap">${daikonCalendarSvg()}</div>`,
   },
   'kuzumochi-process': {
     caption: '関東のくず餅の製法（模式図）。小麦のでんぷんを乳酸発酵させ、せいろで蒸し上げ、黒蜜ときな粉をかけて仕上げます。葛粉を使う関西の葛餅とは原料も作り方も異なります。',
