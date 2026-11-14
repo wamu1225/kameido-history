@@ -274,19 +274,25 @@ function Home() {
                 {group.key}
               </h3>
             </div>
-            <ul className="title-list">
-              {groupArticles.map((a) => (
-                <li key={a.id}>
-                  <a href={`${BASE}/${a.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
-                    <span className="title-list-icon"><SectionIcon name={a.icon} size={20} /></span>
-                    <span className="title-list-body">
-                      <span className="title-list-title">{a.shortTitle}</span>
-                      {ARTICLE_POINTS[a.id] && <span className="title-list-fact">{ARTICLE_POINTS[a.id][0]}</span>}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {/* 題だけが20本並ぶと文字の壁になる。分野ごとに代表の1本を事実つきで見せ、残りは小さな札にまとめる */}
+            <a className="group-feature" href={`${BASE}/${groupArticles[0].id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${groupArticles[0].id}/`); }}>
+              <span className="group-feature-icon"><SectionIcon name={groupArticles[0].icon} size={24} /></span>
+              <span className="group-feature-body">
+                <span className="group-feature-title">{groupArticles[0].shortTitle}</span>
+                {ARTICLE_POINTS[groupArticles[0].id] && <span className="group-feature-fact">{ARTICLE_POINTS[groupArticles[0].id][0]}</span>}
+              </span>
+            </a>
+            {groupArticles.length > 1 && (
+              <ul className="group-chips">
+                {groupArticles.slice(1).map((a) => (
+                  <li key={a.id}>
+                    <a href={`${BASE}/${a.id}/`} onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
+                      <SectionIcon name={a.icon} size={15} />{a.shortTitle}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         );
       })}
