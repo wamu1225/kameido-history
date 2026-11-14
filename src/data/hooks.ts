@@ -9,7 +9,7 @@ export type HookQuestion = { q: string; a: string; id: string; icon: string };
 
 export const HOOK: { catch: string; sub: string; numbers: HookNumber[]; questions: HookQuestion[] } = {
   catch: 'ゴッホが油絵で写した浮世絵、\n描かれたのは亀戸の梅',
-  sub: '学問の天神社と勝運の香取神社が並び、小麦でつくるくず餅と、「日本一小さい」とも呼ばれる大根が名物の下町です。',
+  sub: '歌川広重が版画にした亀戸の梅屋敷を、ゴッホは油絵で写しました。梅屋敷の跡には、いま碑が立っています。',
   numbers: [
     { n: '1662', unit: '年', label: '天神社に太鼓橋と心字池が整えられた', id: 'tenjin', icon: 'drum-bridge' },
     { n: '約30', unit: 'cm', label: '亀戸大根の根の長さ', id: 'daikon', icon: 'radish' },
