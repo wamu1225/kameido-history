@@ -356,18 +356,28 @@ function ChapterNav({ currentId }: { currentId: string }) {
 }
 
 function RelatedSections({ currentId }: { currentId: string }) {
-  const related = articles.filter((a) => a.id !== currentId);
+  // 題が20本並ぶと読む気をそぐので、同じ分野を先に3本だけ、事実の一言つきで出す。残りは一覧へ
+  const cur = articles.find((a) => a.id === currentId);
+  // 直前・直後の記事は、すぐ上の「前の記事／次の記事」に出ているので除く
+  const idx = articles.findIndex((a) => a.id === currentId);
+  const near = new Set([articles[idx - 1]?.id, articles[idx + 1]?.id]);
+  const others = articles.filter((a) => a.id !== currentId && !near.has(a.id));
+  const related = [...others.filter((a) => a.group === cur?.group), ...others.filter((a) => a.group !== cur?.group)].slice(0, 3);
   return (
-    <aside className="related-sections" aria-label="ほかの記事">
-      <h2>ほかの記事も読む</h2>
-      <div className="related-grid">
+    <aside className="related-sections" aria-label="次に読む記事">
+      <h2>次に読むなら</h2>
+      <div className="related-list">
         {related.map((a) => (
-          <a key={a.id} href={`${BASE}/${a.id}/`} className="related-card" onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
+          <a key={a.id} href={`${BASE}/${a.id}/`} className="related-row" onClick={(e) => { e.preventDefault(); navigateTo(`/${a.id}/`); }}>
             <span className="related-emoji" aria-hidden="true"><SectionIcon name={a.icon} size={20} /></span>
-            <span className="related-title">{a.shortTitle}</span>
+            <span className="related-text">
+              <span className="related-title">{a.shortTitle}</span>
+              {ARTICLE_POINTS[a.id] && <span className="related-fact">{ARTICLE_POINTS[a.id][0]}</span>}
+            </span>
           </a>
         ))}
       </div>
+      <a href={`${BASE}/`} className="related-all" onClick={(e) => { e.preventDefault(); navigateTo('/'); }}>記事の一覧を見る（全{articles.length}本）</a>
     </aside>
   );
 }
@@ -392,14 +402,15 @@ function ArticlePage({ article }: { article: Article }) {
       <Breadcrumb currentTitle={article.shortTitle} />
       <article className="section-page">
         <header className="article-header">
-          <div className="article-emoji" aria-hidden="true"><SectionIcon name={article.icon} size={32} /></div>
+          {/* 主題の絵がある記事は、汎用のアイコンを出さず、題のすぐ下に絵を置く */}
+          {!ARTICLE_HERO[article.id] && <div className="article-emoji" aria-hidden="true"><SectionIcon name={article.icon} size={32} /></div>}
           <h1>{article.title}</h1>
           <div className="article-meta">
             <span className="article-meta-item"><Calendar size={14} /> 最終更新: {formatDate(article.updatedAt)}</span>
           </div>
         </header>
-        {article.lead && <p className="lead">{renderInline(article.lead)}</p>}
         {ARTICLE_HERO[article.id] && <div className="hook-scene article-hero" dangerouslySetInnerHTML={{ __html: ARTICLE_HERO[article.id]() }} />}
+        {article.lead && <p className="lead">{renderInline(article.lead)}</p>}
         {ARTICLE_POINTS[article.id] && (
           <aside className="points" aria-label="ざっくり3行">
             <p className="points-label">ざっくり3行</p>

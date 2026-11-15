@@ -248,8 +248,8 @@ function buildArticleFallback(a: Article): string {
     <h1 style="font-size:1.6rem;color:${AI_DEEP};border-bottom:2px solid ${AI};padding-bottom:10px;margin:0 0 8px">${escapeHtml(a.title)}</h1>
     <div style="font-size:0.85rem;color:#6b7280;margin-top:10px">最終更新: ${formatDateJa(a.updatedAt)}</div>
   </header>
-  ${leadHtml}
   ${heroHtml}
+  ${leadHtml}
   ${pointsHtml}
   ${tocHtml}
   <div class="section-content">

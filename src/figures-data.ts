@@ -573,6 +573,28 @@ function meibutsuSvg(): string {
   );
 }
 
+// 15) 梅屋敷の3つの年：広重の版画（1857）・ゴッホの油絵（1887）・廃園（1910）を年に比例して並べる
+function ukiyoeThreeYearsSvg(): string {
+  const X = (y: number) => Math.round((20 + (y - 1850) * (260 / 65)) * 10) / 10;
+  const dot = (y: number, c: string) => `<circle cx="${X(y)}" cy="62" r="5" fill="${c}"/>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 128" width="100%" role="img" aria-label="1857年に広重が版画にし、30年後の1887年にゴッホが油絵に写し、その23年後の1910年に水害で梅屋敷が廃園になったことを、年に比例した線で示した図">` +
+    `<rect width="300" height="128" fill="${BG}"/>` +
+    `<rect x="${X(1857)}" y="58" width="${X(1887) - X(1857)}" height="8" fill="${AI}" fill-opacity="0.55"/>` +
+    `<rect x="${X(1887)}" y="58" width="${X(1910) - X(1887)}" height="8" fill="${SHU}" fill-opacity="0.55"/>` +
+    dot(1857, AI_DEEP) + dot(1887, GOLD) + dot(1910, SHU) +
+    `<text x="${X(1857) - 6}" y="26" font-size="13.5" font-weight="700" fill="${AI_DEEP}">1857年</text>` +
+    `<text x="${X(1857) - 6}" y="42" font-size="13" fill="${INK}">広重の版画</text>` +
+    `<text x="${X(1910) + 6}" y="26" font-size="13.5" font-weight="700" fill="${SHU}" text-anchor="end">1910年</text>` +
+    `<text x="${X(1910) + 6}" y="42" font-size="13" fill="${INK}" text-anchor="end">水害で廃園</text>` +
+    `<text x="${X(1887)}" y="98" font-size="13.5" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">1887年</text>` +
+    `<text x="${X(1887)}" y="114" font-size="13" fill="${INK}" text-anchor="middle">ゴッホの油絵</text>` +
+    `<text x="${(X(1857) + X(1887)) / 2}" y="82" font-size="13" fill="${AI_DEEP}" text-anchor="middle">30年</text>` +
+    `<text x="${(X(1887) + X(1910)) / 2}" y="82" font-size="13" fill="${SHU}" text-anchor="middle">23年</text>` +
+    `</svg>`
+  );
+}
+
 // figure id → { caption, innerHtml }
 // 14) 亀戸事件：震災から公表までを日付に比例した帯で（1923-09-01〜10-10）
 function jikenSilenceSvg(): string {
@@ -636,8 +658,12 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     caption: '広重が描いた亀戸の二枚（模式図）。梅屋舗は手前の梅の太枝ごしに奥の梅林を、天神境内は手前の藤ごしに奥の太鼓橋を見せます。季節は早春と初夏で、どちらも手前を大きく置く構図です。',
     inner: `<div class="diagram-wrap">${ukiyoeTwoViewsSvg()}</div>`,
   },
+  'ukiyoe-three-years': {
+    caption: '線の長さは年数に比例します。広重が版画にしてからゴッホが写すまで30年、ゴッホが写してから梅が枯れるまで23年です。',
+    inner: `<div class="diagram-wrap">${ukiyoeThreeYearsSvg()}</div>`,
+  },
   'umeyashiki-composition': {
-    caption: '広重『亀戸梅屋舗』の構図（模式図）。画面の手前を横切るほど大きく梅の太い枝を配し、その枝のすき間から奥の梅林と梅見の人々をのぞかせる、遠近の常識をくつがえす大胆な近景構図です。',
+    caption: '広重『亀戸梅屋舗』の構図（模式図）。手前の太い枝が画面を横切り、すき間から奥の梅林と見物客が見えます。',
     inner: `<div class="diagram-wrap">${umeyashikiSvg()}</div>`,
   },
   'tokei-machi-timeline': {
