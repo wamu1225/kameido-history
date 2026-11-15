@@ -475,6 +475,50 @@ function daikonCalendarSvg(): string {
   );
 }
 
+// 17) 香取神社：創立の起因から勝矢・元禄・スポーツ燈籠まで、年に比例した位置（665〜2024）
+function katoriTimelineSvg(): string {
+  const X = (y: number) => Math.round((16 + (y - 600) * 0.185) * 10) / 10;
+  const dot = (y: number, yy: number, fill: string) =>
+    `<line x1="${X(y)}" y1="26" x2="${X(y)}" y2="${yy + 6}" stroke="${fill}" stroke-width="1" stroke-dasharray="2 2"/><circle cx="${X(y)}" cy="${yy + 6}" r="5" fill="${fill}"/>`;
+  const lab = (yy: number, t: string) => `<text x="16" y="${yy}" font-size="11.5" font-weight="700" fill="${AI_DEEP}">${t}</text>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 200" width="100%" role="img" aria-label="香取神社の歩みを年に比例した位置で並べた図。665年に創立の起因、940年ごろに勝矢の故事、1697年に徳川家の社寺帳に記載、2024年にスポーツ燈籠。勝矢の故事から今まで約1000年">` +
+    `<rect width="300" height="200" fill="${BG}"/>` +
+    `<line x1="${X(600)}" y1="26" x2="${X(2050)}" y2="26" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    [700, 1000, 1300, 1600, 1900].map((y) => `<line x1="${X(y)}" y1="22" x2="${X(y)}" y2="30" stroke="${AI_DEEP}"/><text x="${X(y)}" y="16" font-size="11" fill="${AI_DEEP}" text-anchor="middle">${y}</text>`).join('') +
+    lab(52, '665年 創立の起因（鎌足が亀の島で祈る）') + dot(665, 56, AI) +
+    lab(84, '940年ごろ 秀郷が弓矢を納める＝勝矢') + dot(940, 88, SHU) +
+    lab(116, '1697年 徳川家の社寺帳に記載') + dot(1697, 120, GOLD) +
+    lab(148, '2024年 スポーツ燈籠28基を展示') + dot(2024, 152, AI_DEEP) +
+    `<rect x="${X(940)}" y="170" width="${Math.round((X(2024) - X(940)) * 10) / 10}" height="10" fill="${SHU}"/>` +
+    `<text x="${X(940)}" y="193" font-size="11.5" font-weight="700" fill="${INK}">勝矢から今まで 約1000年</text>` +
+    `</svg>`
+  );
+}
+
+// 18) 香取神社の1年：武とスポーツにかかわる行事（公式の年間祭事表と2024年の燈籠の告知）
+function katoriYearSvg(): string {
+  const x0 = 12;
+  const cw = 23;
+  const dim = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const pos = (m: number, d: number) => Math.round((x0 + (m - 1 + (d - 1) / dim[m - 1]) * cw) * 10) / 10;
+  const months = Array.from({ length: 12 }, (_, i) => `<text x="${x0 + i * cw + cw / 2}" y="34" font-size="11" fill="${AI_DEEP}" text-anchor="middle">${i + 1}</text>`).join('');
+  const row = (y: number, label: string, x1: number, x2: number, fill: string) =>
+    `<text x="${x0}" y="${y}" font-size="11.5" fill="${INK}">${label}</text><rect x="${x1}" y="${y + 5}" width="${Math.max(x2 - x1, 5)}" height="10" fill="${fill}"/>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 226" width="100%" role="img" aria-label="亀戸香取神社の1年。3月10日福分けまつり、4月29日古武道奉納演武大会、5月5日勝矢祭、8月に例大祭、2024年のスポーツ燈籠の点燈は7月20日から9月11日">` +
+    `<rect width="300" height="226" fill="${BG}"/>` +
+    `<text x="${x0}" y="16" font-size="12" font-weight="700" fill="${AI_DEEP}">香取神社の1年（月）</text>` + months +
+    `<line x1="${x0}" y1="40" x2="${x0 + 12 * cw}" y2="40" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    row(58, '3/10 亀戸大根収穫祭・福分けまつり', pos(3, 10), pos(3, 10) + 5, GOLD) +
+    row(90, '4/29 古武道奉納演武大会', pos(4, 29), pos(4, 29) + 5, AI) +
+    row(122, '5/5 勝矢祭', pos(5, 5), pos(5, 5) + 5, SHU) +
+    row(154, '8月 例大祭（2024年の神幸大祭は8/9〜11）', pos(8, 1), pos(8, 31), AI_DEEP) +
+    row(186, '2024年のスポーツ燈籠 7/20〜9/11', pos(7, 20), pos(9, 11), SHU) +
+    `</svg>`
+  );
+}
+
 // 歴史の年表（17の出来事を4つの時代に分けた縦の年表。社伝・伝承は白抜きの丸、記録のある出来事は塗りの丸）
 function historyTimelineSvg(): string {
   type Ev = { y: string; l: string[]; t?: boolean };
@@ -649,6 +693,14 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'daikon-calendar': {
     caption: '江戸川区で亀戸大根を温室で育てる農家の例（農林水産省の記事）。畑や年によって時期は前後します。福分けまつりは毎年3月、収穫の最中にあたります。',
     inner: `<div class="diagram-wrap">${daikonCalendarSvg()}</div>`,
+  },
+  'katori-timeline': {
+    caption: '位置は年に比例。940年ごろは平将門の乱の時期の目安で、公式の資料に年は書かれていません。創立の起因は、665年に藤原鎌足が東国へ向かう途中、亀の島へ船を寄せて旅の無事を祈ったこと、と公式にあります。',
+    inner: `<div class="diagram-wrap">${katoriTimelineSvg()}</div>`,
+  },
+  'katori-year': {
+    caption: '公式の年間祭事表のうち、武とスポーツにかかわる行事。例大祭は毎年8月（4日〜10日の日曜日）。点燈の期間は2024年のもので、年により変わります。',
+    inner: `<div class="diagram-wrap">${katoriYearSvg()}</div>`,
   },
   'kuzumochi-process': {
     caption: '関東のくず餅の製法（模式図）。小麦のでんぷんを乳酸発酵させ、せいろで蒸し上げ、黒蜜ときな粉をかけて仕上げます。葛粉を使う関西の葛餅とは原料も作り方も異なります。',
