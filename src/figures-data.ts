@@ -285,22 +285,33 @@ function katoriShotengaiTimelineSvg(): string {
   );
 }
 
-// 10) 三代歌川豊国（国貞）の年表
+// 10) 三代歌川豊国（国貞）：生涯を年に比例した帯で（1786〜1864）
 function toyokuniTimelineSvg(): string {
-  const node = (x: number, year: string, label: string, color: string) =>
-    `<circle cx="${x}" cy="54" r="9" fill="${color}"/>` +
-    `<text x="${x}" y="34" font-size="11" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${year}</text>` +
-    `<text x="${x}" y="80" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[0]}</text>` +
-    (label.includes('|') ? `<text x="${x}" y="92" font-size="10.5" fill="${INK}" text-anchor="middle">${label.split('|')[1]}</text>` : '');
+  const X = (y: number) => Math.round((16 + (y - 1786) * 3.4) * 10) / 10;
+  const seg = (y1: number, y2: number, color: string) =>
+    `<rect x="${X(y1)}" y="34" width="${Math.round((X(y2) - X(y1)) * 10) / 10}" height="22" fill="${color}"/>`;
+  const t = (x: number, y: number, s: string, anchor = 'middle', w = 400, c = INK, size = 11) =>
+    `<text x="${x}" y="${y}" font-size="${size}" font-weight="${w}" fill="${c}" text-anchor="${anchor}">${s}</text>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="三代歌川豊国（国貞）の年表の図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    `<line x1="34" y1="54" x2="266" y2="54" stroke="${AI}" stroke-width="2.4"/>` +
-    `<path d="M266 54 l-8 -4 M266 54 l-8 4" stroke="${AI}" stroke-width="2.4" fill="none"/>` +
-    node(40, '1786', '本所で誕生|(のち亀戸に住む)', AI) +
-    node(125, '1844', '（実質）三代目|豊国を襲名', SHU) +
-    node(200, '1854', '広重と合作|「双筆五十三次」', GOLD) +
-    node(260, '1864', '没・亀戸の|光明寺に眠る', AI) +
+    `<svg class="diagram-single" viewBox="0 0 300 140" width="100%" role="img" aria-label="三代歌川豊国（国貞）の生涯を年に比例した帯で示した図。1786年生まれ、文化・文政期に美人画と役者絵、天保期に風景画、1844年に二代豊国を名乗り、1864年没">` +
+    `<rect width="300" height="140" fill="${BG}"/>` +
+    t(X(1786), 24, '1786 生', 'start', 700, AI_DEEP, 11.5) +
+    t(X(1844), 24, '1844', 'middle', 700, SHU, 11.5) +
+    t(X(1864), 24, '1864 没', 'end', 700, AI_DEEP, 11.5) +
+    `<line x1="${X(1844)}" y1="28" x2="${X(1844)}" y2="34" stroke="${SHU}" stroke-width="1.4"/>` +
+    seg(1804, 1830, AI) + seg(1830, 1844, GOLD) + seg(1844, 1864, SHU) +
+    `<rect x="${X(1786)}" y="34" width="${Math.round((X(1804) - X(1786)) * 10) / 10}" height="22" fill="none" stroke="${INK}" stroke-width="1" stroke-dasharray="2 2"/>` +
+    t((X(1786) + X(1804)) / 2, 49, '修業', 'middle', 400, INK, 10.5) +
+    t((X(1804) + X(1830)) / 2, 71, '文化・文政期', 'middle', 700, AI_DEEP) +
+    t((X(1804) + X(1830)) / 2, 85, '美人画・役者絵', 'middle') +
+    t((X(1804) + X(1830)) / 2, 99, '1804〜30年頃', 'middle') +
+    t((X(1830) + X(1844)) / 2, 71, '天保期', 'middle', 700, AI_DEEP) +
+    t((X(1830) + X(1844)) / 2, 85, '風景画', 'middle') +
+    t((X(1830) + X(1844)) / 2, 99, '香蝶楼', 'middle') +
+    t(296, 71, '二代豊国を名乗る', 'end', 700, SHU) +
+    t(296, 85, '（実は三代）', 'end') +
+    t(296, 99, '晩年に広重と合作', 'end') +
+    t(16, 124, '帯の長さは年数に比例。点線の1786〜1804年は区切りの記載なし', 'start', 400, INK, 10.5) +
     `</svg>`
   );
 }
@@ -731,7 +742,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${katoriShotengaiTimelineSvg()}</div>`,
   },
   'toyokuni-timeline': {
-    caption: '三代歌川豊国（国貞）の年表（模式図）。本所に生まれ、のち亀戸に住んで「亀戸豊国」と呼ばれました。1844年に（実質）三代目豊国を襲名し、1854年には広重と「双筆五十三次」を合作。1864年に没し、亀戸の光明寺に葬られました。',
+    caption: '三代歌川豊国（国貞）の生涯（帯の長さは年数に比例）。58歳で「二代豊国」を名乗るまで、帯の色は美人画・役者絵、風景画と移っています。名乗ってからの晩年は20年です。',
     inner: `<div class="diagram-wrap">${toyokuniTimelineSvg()}</div>`,
   },
   'suijingu-timeline': {
