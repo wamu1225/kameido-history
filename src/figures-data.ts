@@ -293,8 +293,8 @@ function toyokuniTimelineSvg(): string {
   const t = (x: number, y: number, s: string, anchor = 'middle', w = 400, c = INK, size = 11) =>
     `<text x="${x}" y="${y}" font-size="${size}" font-weight="${w}" fill="${c}" text-anchor="${anchor}">${s}</text>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 140" width="100%" role="img" aria-label="三代歌川豊国（国貞）の生涯を年に比例した帯で示した図。1786年生まれ、文化・文政期に美人画と役者絵、天保期に風景画、1844年に二代豊国を名乗り、1864年没">` +
-    `<rect width="300" height="140" fill="${BG}"/>` +
+    `<svg class="diagram-single" viewBox="0 0 300 168" width="100%" role="img" aria-label="三代歌川豊国（国貞）の生涯を年に比例した帯で示した図。1786年生まれ、文化・文政期に美人画と役者絵、天保期に風景画、1844年に二代豊国を名乗り、1864年没">` +
+    `<rect width="300" height="168" fill="${BG}"/>` +
     t(X(1786), 24, '1786 生', 'start', 700, AI_DEEP, 11.5) +
     t(X(1844), 24, '1844', 'middle', 700, SHU, 11.5) +
     t(X(1864), 24, '1864 没', 'end', 700, AI_DEEP, 11.5) +
@@ -308,10 +308,9 @@ function toyokuniTimelineSvg(): string {
     t((X(1830) + X(1844)) / 2, 71, '天保期', 'middle', 700, AI_DEEP) +
     t((X(1830) + X(1844)) / 2, 85, '風景画', 'middle') +
     t((X(1830) + X(1844)) / 2, 99, '香蝶楼', 'middle') +
-    t(296, 71, '二代豊国を名乗る', 'end', 700, SHU) +
-    t(296, 85, '（実は三代）', 'end') +
-    t(296, 99, '晩年に広重と合作', 'end') +
-    t(16, 124, '帯の長さは年数に比例。点線の1786〜1804年は区切りの記載なし', 'start', 400, INK, 10.5) +
+    t(296, 120, '1844〜 二代豊国を名乗る', 'end', 700, SHU) +
+    t(296, 134, '（実は三代）。晩年に広重と合作', 'end') +
+    t(16, 158, '帯の長さは年数に比例。点線は区切りの記載なし', 'start', 400, INK, 10.5) +
     `</svg>`
   );
 }
