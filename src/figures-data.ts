@@ -253,8 +253,8 @@ function jotoKotoMergeSvg(): string {
     `<line x1="${X(1947.2)}" y1="20" x2="${X(1947.2)}" y2="150" stroke="${SHU}" stroke-width="1.4" stroke-dasharray="4 3"/>` +
     bar(1878, 1947.2, 44, AI, '深川区 1878〜1947（69年）') +
     bar(1932.75, 1947.2, 80, SHU, '城東区 1932〜1947（14年5か月）') +
-    bar(1947.2, 2026, 116, GOLD, '江東区 1947.3.15〜いま（79年）') +
-    `<text x="${X(1947.2) - 4}" y="170" font-size="11.5" font-weight="700" fill="${SHU}" text-anchor="end">1947年3月15日 2つの区が1つに</text>` +
+    bar(1947.2, 2026, 116, GOLD, '江東区 1947〜いま（79年）') +
+    `<text x="${X(1947.2) + 5}" y="160" font-size="11.5" font-weight="700" fill="${SHU}">1947年3月15日に合併</text>` +
     `</svg>`
   );
 }
