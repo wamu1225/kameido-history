@@ -237,24 +237,48 @@ function tokeiMachiTimelineSvg(): string {
   );
 }
 
-// 8) 城東区＋深川区 → 江東区（1947年）の合成図
+// 8) 深川区・城東区・江東区の存続期間（年に比例した帯）
 function jotoKotoMergeSvg(): string {
-  const box = (x: number, w: number, title: string, sub: string, color: string) =>
-    `<g transform="translate(${x} 0)">` +
-    `<rect x="0" y="20" width="${w}" height="60" rx="6" fill="#ffffff" stroke="${color}" stroke-width="1.8"/>` +
-    `<text x="${w / 2}" y="46" font-size="13" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">${title}</text>` +
-    `<text x="${w / 2}" y="64" font-size="11" fill="${INK}" text-anchor="middle">${sub}</text>` +
-    `</g>`;
+  const X = (y: number) => Math.round((16 + (y - 1878) * 1.8) * 10) / 10;
+  const bar = (y1: number, y2: number, ty: number, color: string, label: string, anchor: 'start' | 'end' = 'start') =>
+    `<text x="${anchor === 'start' ? X(y1) : X(y2)}" y="${ty}" font-size="11.5" font-weight="700" fill="${AI_DEEP}" text-anchor="${anchor}">${label}</text>` +
+    `<rect x="${X(y1)}" y="${ty + 5}" width="${Math.round((X(y2) - X(y1)) * 10) / 10}" height="16" fill="${color}"/>`;
+  const ticks = [1878, 1900, 1932, 1947, 2000]
+    .map((y) => `<text x="${X(y)}" y="14" font-size="11" fill="${AI_DEEP}" text-anchor="middle">${y}</text>`)
+    .join('');
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 110" width="100%" role="img" aria-label="城東区と深川区が合併して江東区になった図">` +
-    `<rect width="300" height="110" fill="${BG}"/>` +
-    box(4, 92, '城東区', '1932年成立', SHU) +
-    `<text x="106" y="56" font-size="16" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">＋</text>` +
-    box(112, 92, '深川区', '1878年〜', AI) +
-    `<path d="M212 50 h18" stroke="${GOLD}" stroke-width="2.4" marker-end="url(#jk-arrow)"/>` +
-    `<defs><marker id="jk-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="${GOLD}"/></marker></defs>` +
-    box(232, 64, '江東区', '1947年〜', GOLD) +
-    `<text x="150" y="98" font-size="11" fill="${INK}" text-anchor="middle">区名の「江」は深川、「東」は城東を表すとされる</text>` +
+    `<svg class="diagram-single" viewBox="0 0 300 190" width="100%" role="img" aria-label="深川区（1878〜1947年）、城東区（1932年10月〜1947年3月）、江東区（1947年3月〜）の存続期間を年に比例した帯で並べた図">` +
+    `<rect width="300" height="190" fill="${BG}"/>` +
+    ticks +
+    `<line x1="${X(1947.2)}" y1="20" x2="${X(1947.2)}" y2="150" stroke="${SHU}" stroke-width="1.4" stroke-dasharray="4 3"/>` +
+    bar(1878, 1947.2, 44, AI, '深川区 1878〜1947（69年）') +
+    bar(1932.75, 1947.2, 80, SHU, '城東区 1932〜1947（14年5か月）') +
+    bar(1947.2, 2026, 116, GOLD, '江東区 1947.3.15〜いま（79年）') +
+    `<text x="${X(1947.2) - 4}" y="170" font-size="11.5" font-weight="700" fill="${SHU}" text-anchor="end">1947年3月15日 2つの区が1つに</text>` +
+    `</svg>`
+  );
+}
+
+// 8b) 東京大空襲の碑の年表（年に比例）
+function totoKushuTimelineSvg(): string {
+  const X = (y: number) => Math.round((16 + (y - 1945.2) * 8.2) * 10) / 10;
+  const ev = (y: number, row: number, text: string, color: string, anchor: 'start' | 'end' = 'start') => {
+    const ty = 62 + row * 30;
+    return (
+      `<line x1="${X(y)}" y1="34" x2="${X(y)}" y2="${ty - 12}" stroke="${color}" stroke-width="1"/>` +
+      `<circle cx="${X(y)}" cy="34" r="4.5" fill="${color}"/>` +
+      `<text x="${anchor === 'start' ? X(y) - 2 : X(y) + 2}" y="${ty}" font-size="11.5" fill="${INK}" text-anchor="${anchor}">${text}</text>`
+    );
+  };
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 210" width="100%" role="img" aria-label="1945年の東京大空襲から1977年まで、亀戸の供養碑にかかわる出来事を年に比例して並べた年表">` +
+    `<rect width="300" height="210" fill="${BG}"/>` +
+    `<line x1="${X(1945.2)}" y1="34" x2="${X(1977.2)}" y2="34" stroke="${AI_DEEP}" stroke-width="2"/>` +
+    ev(1945.2, 0, '1945.3.10 空襲', SHU) +
+    ev(1946.2, 1, '1946.3.10 亀戸駅前の焦土に供養碑を建てる', AI) +
+    ev(1947.2, 2, '1947.3 35区が22区に（城東・深川→江東区）', AI) +
+    ev(1954.9, 3, '1954晩秋 区画整理で碑を普門院へ移す', GOLD) +
+    ev(1977.2, 4, '1977.3.10 33回忌に碑と周辺を整備', AI, 'end') +
     `</svg>`
   );
 }
@@ -732,8 +756,12 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     caption: '同じ土地の使われ方（帯の長さは年数に比例）。時計の工場は54年、その跡のサンストリート亀戸は19年、カメイドクロックはまだ4年です。商業施設の2つ分を足しても、工場の時代には届きません。',
     inner: `<div class="diagram-wrap">${tokeiMachiTimelineSvg()}</div>`,
   },
+  'toto-kushu-timeline': {
+    caption: '帯でなく点の位置が年に比例（1945〜1977年）。碑は建ってから8年めに、駅前から普門院へ移されました。',
+    inner: `<div class="diagram-wrap">${totoKushuTimelineSvg()}</div>`,
+  },
   'joto-koto-merge': {
-    caption: '江東区の成立（模式図）。1932年に亀戸町・大島町・砂町から成立した城東区と、1878年からの深川区が、1947年3月15日に合併して江東区になりました。区名の「江」は深川、「東」は城東を表すとされます。',
+    caption: '帯の長さは年数に比例。亀戸が属した城東区は、深川区の5分の1ほどの14年5か月しかありませんでした。いまの江東区は、その城東区の5倍以上の長さになります。',
     inner: `<div class="diagram-wrap">${jotoKotoMergeSvg()}</div>`,
   },
   'katori-shotengai-timeline': {
