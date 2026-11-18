@@ -144,7 +144,7 @@ function kuzumochiProcessSvg(): string {
     `<svg class="diagram-single" viewBox="0 0 300 112" width="100%" role="img" aria-label="関東のくず餅の製法の流れの図">` +
     `<rect width="300" height="112" fill="${BG}"/>` +
     step(0, '小麦の|でんぷん', wheat) + arrow(70) +
-    step(82, '乳酸発酵', ferment) + arrow(152) +
+    step(82, '発酵させる', ferment) + arrow(152) +
     step(164, 'せいろで|蒸す', steam) + arrow(234) +
     step(236, '黒蜜・|きな粉', serve) +
     `</svg>`
@@ -699,7 +699,75 @@ function jikenSilenceSvg(): string {
   );
 }
 
+// 14) 亀戸七福神めぐり：江東区観光協会のおすすめルートを、区間の徒歩時間に比例した縦の道で
+function shichifukujinRouteSvg(): string {
+  const k = 4.2, top = 40, x = 108;
+  const Y = (m: number) => Math.round((top + m * k) * 10) / 10;
+  const stops: { m: number; name: string; god: string; c: string }[] = [
+    { m: 0, name: '亀戸水神駅', god: '出発', c: GOLD },
+    { m: 7, name: '常光寺', god: '寿老人', c: SHU },
+    { m: 14, name: '東覚寺', god: '弁財天', c: SHU },
+    { m: 29, name: '天祖神社', god: '福禄寿', c: SHU },
+    { m: 34, name: '龍眼寺', god: '布袋尊', c: SHU },
+    { m: 44, name: '普門院', god: '毘沙門天', c: SHU },
+    { m: 50, name: '香取神社', god: '恵比寿神・大国神', c: SHU },
+    { m: 65, name: 'JR亀戸駅', god: '到着', c: GOLD },
+  ];
+  const segs = [7, 7, 15, 5, 10, 6, 15];
+  let g = `<line x1="${x}" y1="${Y(0)}" x2="${x}" y2="${Y(65)}" stroke="${AI}" stroke-width="3"/>`;
+  let acc = 0;
+  segs.forEach(s => {
+    g += `<text x="${x - 14}" y="${Y(acc + s / 2) + 4}" font-size="12" fill="${INK}" text-anchor="end">${s}分</text>`;
+    acc += s;
+  });
+  stops.forEach(s => {
+    g += `<circle cx="${x}" cy="${Y(s.m)}" r="6" fill="${s.c}"/>` +
+      `<text x="${x + 16}" y="${Y(s.m) + 4}" font-size="12.5" fill="${INK}"><tspan font-weight="700" fill="${AI_DEEP}">${s.name}</tspan>　${s.god}</text>`;
+  });
+  const h = Math.round(Y(65) + 24);
+  return (
+    `<svg class="diagram-single" viewBox="0 0 320 ${h}" width="100%" role="img" aria-label="亀戸七福神めぐりの順路。亀戸水神駅から常光寺まで7分、東覚寺まで7分、天祖神社まで15分、龍眼寺まで5分、普門院まで10分、香取神社まで6分、JR亀戸駅まで15分で、歩く時間の合計は65分">` +
+    `<rect width="320" height="${h}" fill="${BG}"/>` +
+    `<text x="14" y="20" font-size="12.5" font-weight="700" fill="${AI_DEEP}">歩く時間（縦の長さは時間に比例）</text>` +
+    g + `</svg>`
+  );
+}
+
+// 15) 船橋屋：創業から本店焼失まで140年、そこからいままで81年（年に比例）
+function funabashiyaYearsSvg(): string {
+  const X = (y: number) => Math.round((14 + (y - 1805) * (272 / 221)) * 10) / 10;
+  const ev = (y: number, row: number, text: string, color: string, anchor: 'start' | 'end' = 'start') => {
+    const ty = 84 + row * 28;
+    return (
+      `<line x1="${X(y)}" y1="48" x2="${X(y)}" y2="${ty - 12}" stroke="${color}" stroke-width="1"/>` +
+      `<text x="${anchor === 'start' ? X(y) - 2 : X(y) + 2}" y="${ty}" font-size="12" fill="${INK}" text-anchor="${anchor}">${text}</text>`
+    );
+  };
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 200" width="100%" role="img" aria-label="1805年の創業から1945年の本店焼失まで140年、そこから2026年まで81年を、年に比例した帯で示した図">` +
+    `<rect width="300" height="200" fill="${BG}"/>` +
+    `<rect x="${X(1805)}" y="28" width="${X(1945.2) - X(1805)}" height="20" fill="${AI}"/>` +
+    `<rect x="${X(1945.2)}" y="28" width="${X(2026) - X(1945.2)}" height="20" fill="#9aa3b1"/>` +
+    `<text x="${(X(1805) + X(1945.2)) / 2}" y="43" font-size="12.5" font-weight="700" fill="#ffffff" text-anchor="middle">140年</text>` +
+    `<text x="${(X(1945.2) + X(2026)) / 2}" y="43" font-size="12.5" font-weight="700" fill="${INK}" text-anchor="middle">81年</text>` +
+    `<circle cx="${X(1805)}" cy="48" r="4" fill="${SHU}"/><circle cx="${X(1868)}" cy="48" r="4" fill="${GOLD}"/><circle cx="${X(1923.7)}" cy="48" r="4" fill="${AI_DEEP}"/><circle cx="${X(1945.2)}" cy="48" r="4" fill="${SHU}"/>` +
+    ev(1805, 0, '1805 亀戸天神の門前で創業', SHU) +
+    ev(1868, 1, '明治の初め 江戸名物の番付に', GOLD) +
+    ev(1923.7, 2, '1923 関東大震災', AI_DEEP) +
+    ev(1945.2, 3, '1945.3 空襲で本店が焼ける', SHU, 'end') +
+    `</svg>`
+  );
+}
+
 const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
+  'shichifukujin-route': {
+    caption: '江東区観光協会のおすすめルート。縦の長さは歩く時間に比例し、区間の合計は65分です。亀戸水神駅から、JR亀戸駅まで歩いて着きます。',
+    inner: `<div class="diagram-wrap">${shichifukujinRouteSvg()}</div>`,
+  },
+  'funabashiya-years': {
+    caption: '帯の長さは年数に比例（1805〜2026年）。明治の初めの点は、時期が「初頭」としか書かれていないため、1868年の位置に置いた目安です。',
+    inner: `<div class="diagram-wrap">${funabashiyaYearsSvg()}</div>`,
+  },
   'meibutsu-timeline': {
     caption: '亀戸の名物が生まれた年（縦の長さは年に比例）。江戸時代の二つから昭和の餃子まで約150年、ホルモン店はそのさらに約半世紀後です。',
     inner: `<div class="diagram-wrap">${meibutsuSvg()}</div>`,
