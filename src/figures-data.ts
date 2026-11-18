@@ -126,7 +126,7 @@ function daikonShapeSvg(): string {
   );
 }
 
-// 5) くず餅の製法フロー（小麦でんぷん→乳酸発酵→せいろ蒸し→黒蜜きな粉）
+// 5) くず餅の製法フロー（小麦でんぷん→発酵→せいろ蒸し→黒蜜きな粉）
 function kuzumochiProcessSvg(): string {
   const step = (x: number, label: string, draw: string) =>
     `<g transform="translate(${x} 0)">` +
@@ -137,11 +137,11 @@ function kuzumochiProcessSvg(): string {
     `</g>`;
   const arrow = (x: number) => `<path d="M${x} 49 h12" stroke="${SHU}" stroke-width="2.4"/><path d="M${x + 12} 49 l-5 -3 M${x + 12} 49 l-5 3" stroke="${SHU}" stroke-width="2.4" fill="none"/>`;
   const wheat = `<path d="M35 34 V64" stroke="#caa84e" stroke-width="2"/>${[40, 48, 56].map(y => `<path d="M35 ${y} q-7 -3 -9 -9 M35 ${y} q7 -3 9 -9" stroke="#caa84e" stroke-width="2" fill="none"/>`).join('')}`;
-  const ferment = `<path d="M22 40 h26 v22 a13 7 0 0 1 -26 0 Z" fill="#f0ead4" stroke="#b9b083" stroke-width="1.5"/>${[28, 36, 44].map((x, i) => `<circle cx="${x}" cy="${52 + (i % 2) * 4}" r="2" fill="#9fb36a"/>`).join('')}<text x="35" y="34" font-size="10.5" fill="#7e8a55" text-anchor="middle">乳酸菌</text>`;
+  const ferment = `<path d="M22 40 h26 v22 a13 7 0 0 1 -26 0 Z" fill="#f0ead4" stroke="#b9b083" stroke-width="1.5"/>${[28, 36, 44].map((x, i) => `<circle cx="${x}" cy="${52 + (i % 2) * 4}" r="2" fill="#9fb36a"/>`).join('')}<text x="35" y="34" font-size="10.5" fill="#7e8a55" text-anchor="middle">発酵</text>`;
   const steam = `<path d="M22 58 h26 v6 h-26 Z" fill="#b98a5e"/><path d="M24 50 h22 v8 h-22 Z" fill="#d8b487" stroke="#b98a5e" stroke-width="1"/>${[30, 38].map(x => `<path d="M${x} 46 q-3 -4 0 -8" stroke="#b8c4cc" stroke-width="1.6" fill="none"/>`).join('')}`;
   const serve = `<path d="M22 60 q13 8 26 0" fill="none" stroke="#b9b083" stroke-width="1.5"/><path d="M24 50 h22 l-3 12 h-16 Z" fill="#efe6cf" stroke="#cfc7a8" stroke-width="1"/><path d="M28 52 q7 4 14 0" stroke="#5a3a1a" stroke-width="2" fill="none"/><circle cx="32" cy="48" r="1.6" fill="#caa84e"/><circle cx="40" cy="49" r="1.6" fill="#caa84e"/>`;
   return (
-    `<svg class="diagram-single" viewBox="0 0 300 112" width="100%" role="img" aria-label="関東のくず餅の製法の流れの図">` +
+    `<svg class="diagram-single" viewBox="-4 0 308 112" width="100%" role="img" aria-label="関東のくず餅の製法の流れの図">` +
     `<rect width="300" height="112" fill="${BG}"/>` +
     step(0, '小麦の|でんぷん', wheat) + arrow(70) +
     step(82, '発酵させる', ferment) + arrow(152) +
@@ -805,7 +805,7 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     inner: `<div class="diagram-wrap">${katoriYearSvg()}</div>`,
   },
   'kuzumochi-process': {
-    caption: '関東のくず餅の製法（模式図）。小麦のでんぷんを乳酸発酵させ、せいろで蒸し上げ、黒蜜ときな粉をかけて仕上げます。葛粉を使う関西の葛餅とは原料も作り方も異なります。',
+    caption: '関東のくず餅の製法（模式図）。小麦のでんぷんを発酵させ、せいろで蒸し上げ、黒蜜ときな粉をかけて仕上げます。葛粉を使う関西の葛餅とは原料も作り方も異なります。',
     inner: `<div class="diagram-wrap">${kuzumochiProcessSvg()}</div>`,
   },
   'ukiyoe-two-views': {
