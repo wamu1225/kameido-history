@@ -45,6 +45,34 @@ function nameOriginSvg(): string {
   );
 }
 
+// 1b) 亀戸の町名の移り変わり（縦軸は年に比例。江東区「町名の移り変わり②」）
+function nameOriginYearsSvg(): string {
+  const Y = (y: number) => Math.round((24 + (y - 1398) * 0.45) * 10) / 10;
+  const items: [number, string, string, string, string][] = [
+    [1398, '1398以前', '亀戸村が起立（応永5年以前）', '', SHU],
+    [1664, '1664', '亀戸町・清水町・亀戸境町', '寛文4年', AI],
+    [1745, '1745', '亀戸不動院門前の名が加わる', '延享2年', AI],
+    [1889, '1889', '町村制。小字に浅間・水神', '明治22年', AI],
+    [1932, '1932', '東京市城東区に。1〜9丁目へ', '昭和7年', GOLD],
+    [2026, 'いま', '江東区亀戸1〜9丁目', '', GOLD],
+  ];
+  const H = Math.round(Y(2026) + 22);
+  const body = items.map((it) => {
+    const y = Y(it[0]);
+    return `<circle cx="84" cy="${y}" r="5.5" fill="${it[4]}"/>` +
+      `<text x="74" y="${y + 4}" font-size="12" font-weight="700" fill="${AI_DEEP}" text-anchor="end">${it[1]}</text>` +
+      `<text x="96" y="${y + 4}" font-size="12" fill="${INK}">${it[2]}</text>`;
+  }).join('');
+  return (
+    `<svg class="diagram-single" viewBox="0 0 300 ${H}" width="100%" role="img" aria-label="亀戸の町名の移り変わり。1398年以前の亀戸村から、1664年、1745年、1889年、1932年の亀戸町1〜9丁目まで、年に比例した縦の年表">` +
+    `<rect width="300" height="${H}" fill="${BG}"/>` +
+    `<line x1="84" y1="${Y(1398)}" x2="84" y2="${Y(2026)}" stroke="${AI}" stroke-width="2.4"/>` +
+    `<line x1="84" y1="${Y(1398)}" x2="84" y2="${Y(1398) + 10}" stroke="${BG}" stroke-width="4"/>` +
+    body +
+    `</svg>`
+  );
+}
+
 // 2) 天神社 創建の流れ（1646 遍歴 → 1657 大火 → 1662 正遷宮）
 function tenjinFoundingSvg(): string {
   const rows: [string, string, string, string][] = [
@@ -305,6 +333,26 @@ function katoriShotengaiTimelineSvg(): string {
     `<circle cx="${X(2011)}" cy="148" r="4" fill="${SHU}"/>` +
     `<text x="304" y="168" font-size="12" font-weight="700" fill="${SHU}" text-anchor="end">2011年 リニューアルで街並みを新築</text>` +
     `<text x="304" y="184" font-size="11.5" fill="${INK}" text-anchor="end">手本の時代から約50〜90年あとにつくられた再現</text>` +
+    `</svg>`
+  );
+}
+
+// 9b) 看板建築の断面（正面の壁と、うしろの木造の家）
+function kanbanKenchikuSvg(): string {
+  return (
+    `<svg class="diagram-single" viewBox="0 0 320 190" width="100%" role="img" aria-label="看板建築の断面の図。通りがわに平らな壁があり、そのうしろに屋根の斜めな木造の家がある">` +
+    `<rect width="320" height="190" fill="${BG}"/>` +
+    `<line x1="10" y1="150" x2="310" y2="150" stroke="${AI_DEEP}" stroke-width="2"/>` +
+    `<path d="M112 84 L186 52 L260 84 V150 H112 Z" fill="#e7dcc0" stroke="${AI}" stroke-width="2"/>` +
+    `<rect x="96" y="40" width="16" height="110" fill="${GOLD}" stroke="${AI_DEEP}" stroke-width="1.6"/>` +
+    `<rect x="90" y="34" width="28" height="8" fill="${SHU}"/>` +
+    `<rect x="99" y="70" width="10" height="16" fill="${BG}" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    `<rect x="99" y="104" width="10" height="16" fill="${BG}" stroke="${AI_DEEP}" stroke-width="1"/>` +
+    `<text x="134" y="122" font-size="12" fill="${INK}">うしろは木造の家</text>` +
+    `<text x="134" y="138" font-size="12" fill="${INK}">（屋根はななめ）</text>` +
+    `<text x="130" y="24" font-size="12" font-weight="700" fill="${SHU}">正面だけ、平らな壁</text>` +
+    `<path d="M128 28 L116 38" stroke="${SHU}" stroke-width="1.4"/>` +
+    `<text x="10" y="172" font-size="12" fill="${AI_DEEP}">← 通りがわ</text>` +
     `</svg>`
   );
 }
@@ -772,6 +820,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     caption: '亀戸の名物が生まれた年（縦の長さは年に比例）。江戸時代の二つから昭和の餃子まで約150年、ホルモン店はそのさらに約半世紀後です。',
     inner: `<div class="diagram-wrap">${meibutsuSvg()}</div>`,
   },
+  'name-origin-years': {
+    caption: '縦の長さは年に比例（1398〜2026年）。江東区の町名の表にもとづきます。1398年は村の起立が「応永5年以前」とされるため、その年より前に成立した、という意味です。',
+    inner: `<div class="diagram-wrap">${nameOriginYearsSvg()}</div>`,
+  },
   'name-origin': {
     caption: '亀戸の地名の三つの説（模式図）。亀の形をした島、亀甲を思わせる井桁の古井戸「亀ヶ井」、神社の領民を指す「神戸（かみど）」の転訛——いずれの説も併存し、一つには断定されていません。',
     inner: `<div class="diagram-wrap">${nameOriginSvg()}</div>`,
@@ -831,6 +883,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'joto-koto-merge': {
     caption: '帯の長さは年数に比例。亀戸が属した城東区は、深川区の5分の1ほどの14年5か月しかありませんでした。いまの江東区は、その城東区の5倍以上の長さになります。',
     inner: `<div class="diagram-wrap">${jotoKotoMergeSvg()}</div>`,
+  },
+  'kanban-kenchiku': {
+    caption: '看板建築の断面（模式図）。通りに向いた正面だけを、モルタルや銅板で飾った平らな壁にします。壁のうしろの建物は、ふつうの木造の家です。',
+    inner: `<div class="diagram-wrap">${kanbanKenchikuSvg()}</div>`,
   },
   'katori-shotengai-timeline': {
     caption: '香取勝運商店街の時間の位置関係（模式図）。商店街としては明治の頃からの歴史がありますが、手本にした看板建築は1923年（大正12年）以後から昭和初期の流行、コンセプトの「昭和30年代」は1955〜64年で、街並みそのものは2011年（平成23年）につくられた再現です。',
