@@ -98,36 +98,6 @@ function tenjinFoundingSvg(): string {
   );
 }
 
-// 3) 太鼓橋・心字池・藤とスカイツリーの景観
-function taikobashiSvg(): string {
-  return (
-    `<svg class="diagram-single" viewBox="0 0 300 180" width="100%" role="img" aria-label="亀戸天神社の太鼓橋・心字池・藤と東京スカイツリーの景観図">` +
-    `<rect width="300" height="180" fill="${BG}"/>` +
-    // 空
-    `<rect x="0" y="0" width="300" height="120" fill="#e7eef4"/>` +
-    // スカイツリー（奥）
-    `<path d="M236 30 L242 110 L230 110 Z" fill="#9fb4c6"/>` +
-    `<line x1="239" y1="14" x2="239" y2="30" stroke="#9fb4c6" stroke-width="2"/>` +
-    `<text x="239" y="24" font-size="10.5" fill="#6d8298" text-anchor="middle">スカイツリー</text>` +
-    // 心字池（水面）
-    `<rect x="0" y="120" width="300" height="60" fill="#bcd6e8"/>` +
-    `<path d="M0 120 H300" stroke="#9bbdd4" stroke-width="2"/>` +
-    // 太鼓橋（大きく反る朱の橋）
-    `<path d="M40 132 Q150 56 260 132" fill="none" stroke="${SHU}" stroke-width="9" stroke-linecap="round"/>` +
-    `<path d="M40 132 Q150 70 260 132" fill="none" stroke="#d98a78" stroke-width="2"/>` +
-    // 橋脚
-    `<line x1="92" y1="104" x2="92" y2="138" stroke="${SHU}" stroke-width="4"/>` +
-    `<line x1="208" y1="104" x2="208" y2="138" stroke="${SHU}" stroke-width="4"/>` +
-    // 水面の映り込み
-    `<path d="M40 140 Q150 168 260 140" fill="none" stroke="#cf9c90" stroke-width="3" opacity="0.55"/>` +
-    // 藤棚（手前左右に垂れる藤）
-    `${[18, 34, 50, 66].map(x => `<line x1="${x}" y1="40" x2="${x}" y2="92" stroke="#9b86c4" stroke-width="3"/>` + `${[48, 62, 76].map(y => `<circle cx="${x}" cy="${y}" r="3" fill="#7e63b4"/>`).join('')}`).join('')}` +
-    `<line x1="10" y1="40" x2="76" y2="40" stroke="#6e7d4a" stroke-width="3"/>` +
-    `<text x="150" y="172" font-size="11" fill="${AI_DEEP}" text-anchor="middle">太鼓橋・藤・心字池の向こうにスカイツリー</text>` +
-    `</svg>`
-  );
-}
-
 // 4) 亀戸大根 vs 一般的な大根（形の比較）
 function daikonShapeSvg(): string {
   const radish = (cx: number, len: number, neck: string, label: string, sub: string) =>
@@ -443,6 +413,70 @@ function kotsuTimelineSvg(): string {
     st(40, 222, '浅草', AI) + st(160, 222, '曳舟', GOLD) + st(290, 222, '亀戸', SHU) +
     ln(14, 44, 292, '#8a8372', 1.6, '4 3') +
     tx(52, 296, '越中島・新橋への延伸構想は実現せず', 11.5, 400, INK, 'start') +
+    `</svg>`
+  );
+}
+
+// 天神社の年間行事（公式の年間行事表。日付は月内の位置に比例）
+function tenjinYearSvg(): string {
+  const x0 = 44, k = 4.6, top = 58, rh = 30;
+  // [月, 帯の開始日, 終了日, 点の日, ラベル, 色]
+  type R = { m: number; a?: number; b?: number; d?: number; t: string; c: string };
+  const rows: R[] = [
+    { m: 1, d: 24, t: 'うそ替え神事 24・25日', c: SHU },
+    { m: 2, a: 1, b: 28, t: '梅まつり（〜3月上旬）', c: GOLD },
+    { m: 3, a: 1, b: 10, d: 25, t: '神忌祭 25日', c: GOLD },
+    { m: 4, a: 11, b: 30, t: '藤まつり 50株以上', c: AI },
+    { m: 5, d: 5, t: '出世鯉放流 5日', c: SHU },
+    { m: 6, d: 25, t: '夏越祓 25日', c: SHU },
+    { m: 7, d: 25, t: '筆塚祭 25日', c: SHU },
+    { m: 8, d: 25, t: '例大祭 25日', c: SHU },
+    { m: 9, d: 25, t: '敬老延寿祭 25日', c: SHU },
+    { m: 10, a: 22, b: 31, t: '菊まつり（〜11月下旬）', c: GOLD },
+    { m: 11, a: 1, b: 30, d: 15, t: '七五三 15日', c: GOLD },
+    { m: 12, d: 25, t: '納め天神祭 25日', c: SHU },
+  ];
+  const H = top + rows.length * rh + 14;
+  const xd = (d: number) => x0 + (d - 1) * k;
+  let g = `<line x1="${xd(25)}" y1="${top - 14}" x2="${xd(25)}" y2="${H - 12}" stroke="${GOLD}" stroke-width="1.6" stroke-dasharray="4 3"/>` +
+    `<text x="${xd(25)}" y="${top - 22}" font-size="12" font-weight="700" fill="${AI_DEEP}" text-anchor="middle">毎月25日＝初天神祭</text>`;
+  rows.forEach((r, i) => {
+    const y = top + i * rh;
+    g += `<text x="12" y="${y + 5}" font-size="12.5" font-weight="700" fill="${AI_DEEP}">${r.m}月</text>` +
+      `<line x1="${x0}" y1="${y}" x2="${xd(31)}" y2="${y}" stroke="#d9cfb8" stroke-width="1"/>`;
+    if (r.a) g += `<rect x="${xd(r.a)}" y="${y - 6}" width="${(r.b! - r.a + 1) * k}" height="12" fill="${r.c}"/>`;
+    if (r.d) g += `<circle cx="${xd(r.d)}" cy="${y}" r="6" fill="${r.d === 25 && !r.a ? SHU : SHU}" stroke="${BG}" stroke-width="1.5"/>`;
+    g += `<text x="${xd(31) + 12}" y="${y + 4}" font-size="12" fill="${INK}">${r.t}</text>`;
+  });
+  return (
+    `<svg class="diagram-single" viewBox="0 0 340 ${H}" width="100%" role="img" aria-label="亀戸天神社の1年の行事。梅は2月から3月上旬、藤は4月中旬から下旬、菊は10月下旬から11月下旬、毎月25日に初天神祭">` +
+    `<rect width="340" height="${H}" fill="${BG}"/>` + g + `</svg>`
+  );
+}
+
+// 東武亀戸線 1894〜2026 年に比例した帯（直通の6年と、支線の116年）
+function kotsuYearsSvg(): string {
+  const x0 = 24, w = 292, y0 = 1894, y1 = 2026;
+  const X = (y: number) => x0 + ((y - y0) / (y1 - y0)) * w;
+  const tx = (x: number, y: number, t: string, c = INK, w = 400, a = 'start', sz = 12) =>
+    `<text x="${x}" y="${y}" font-size="${sz}" font-weight="${w}" fill="${c}" text-anchor="${a}">${t}</text>`;
+  return (
+    `<svg class="diagram-single" viewBox="0 0 340 250" width="100%" role="img" aria-label="東武亀戸線の両国橋直通は1904年から1910年の6年間、その後2026年まで116年は曳舟〜亀戸間の支線">` +
+    `<rect width="340" height="250" fill="${BG}"/>` +
+    tx(14, 26, '1894年から2026年まで（年に比例）', AI_DEEP, 700, 'start', 13) +
+    `<rect x="${X(1904)}" y="48" width="${X(1910) - X(1904)}" height="26" fill="${GOLD}"/>` +
+    `<rect x="${X(1910)}" y="48" width="${X(2026) - X(1910)}" height="26" fill="${AI}"/>` +
+    tx(X(1910) + 8, 66, '支線　116年', '#ffffff', 700) +
+    `<line x1="${X(1904) + 3}" y1="82" x2="${X(1904) + 3}" y2="98" stroke="${INK}" stroke-width="1.4"/>` +
+    tx(X(1904) - 10, 114, '1904〜1910年', AI_DEEP, 700) +
+    tx(X(1904) - 10, 132, '両国橋まで直通（6年）', INK, 400) +
+    `<line x1="${x0}" y1="156" x2="${x0 + w}" y2="156" stroke="#8a8372" stroke-width="1.4"/>` +
+    [[1894, '1894'], [1904, ''], [1910, ''], [2026, '2026']].map(([y, l]) =>
+      `<line x1="${X(y as number)}" y1="150" x2="${X(y as number)}" y2="162" stroke="#8a8372" stroke-width="1.4"/>` +
+      (l ? tx(X(y as number), 178, l as string, INK, 700, y === 2026 ? 'end' : 'start', 11.5) : '')).join('') +
+    tx(14, 206, '1894　総武鉄道が本所〜市川間を開業', INK) +
+    tx(14, 226, '1904　亀戸〜曳舟間が開業　1907　総武鉄道が国有化', INK) +
+    tx(14, 244, '1910　浅草駅（初代）が開業し、直通は廃止', INK) +
     `</svg>`
   );
 }
@@ -832,9 +866,9 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
     caption: '亀戸天神社の年表。1646年に信祐が天神像を奉じて巡歴し、1657年の明暦の大火後の復興のなかで、1662年に太宰府にならって正遷宮が行われました。社名は1873年に亀戸神社、1936年に現在の亀戸天神社になりました。',
     inner: `<div class="diagram-wrap">${tenjinFoundingSvg()}</div>`,
   },
-  'taikobashi-skytree': {
-    caption: '亀戸天神社の景観（模式図）。心字池にかかる朱塗りの太鼓橋と藤棚の向こうに、東京スカイツリーが重なって見えます。江戸の景観と現代の塔が一枚に収まる、亀戸ならではの眺めです。',
-    inner: `<div class="diagram-wrap">${taikobashiSvg()}</div>`,
+  'tenjin-year': {
+    caption: '亀戸天神社の1年の行事（公式の年間行事表から主なものを抜粋）。帯は花の季節の行事、丸は日付が決まった行事で、位置は月の中の日付に比例しています。破線は毎月25日の初天神祭。8月下旬には、4年に1度の御鳳輦渡御祭や神輿渡御も行われます。',
+    inner: `<div class="diagram-wrap">${tenjinYearSvg()}</div>`,
   },
   'daikon-shape': {
     caption: '亀戸大根と一般的な青首大根の比較（模式図）。亀戸大根は長さ約30cmと小ぶりで、首まで白いのが特徴です。一般的な青首大根は大ぶりで、上部が緑色になります。寸法は目安です。',
@@ -899,6 +933,10 @@ const FIGURE_DATA: Record<string, { caption: string; inner: string }> = {
   'suijingu-timeline': {
     caption: '亀戸水神宮の記録の年表（模式図）。白抜きの丸は社伝、塗りの丸は古地図や碑など記録のある出来事です。1894年から1938年の赤い帯は、碑文に「戦役以後の都市化で樹木が枯れた」と書かれた時期で、年に比例した間隔で描いています。上の2点は目盛りが違い、間の約200年は省いています。',
     inner: `<div class="diagram-wrap">${suijinguTimelineSvg()}</div>`,
+  },
+  'kotsu-years': {
+    caption: '東武亀戸線の歩み（年に比例した帯）。1904年の開業から1910年までの6年間は、総武鉄道の両国橋駅まで直通していました。浅草駅（初代）の開業で直通が廃止されてから、2026年までの116年は曳舟〜亀戸間3.4kmの支線です。',
+    inner: `<div class="diagram-wrap">${kotsuYearsSvg()}</div>`,
   },
   'kotsu-timeline': {
     caption: '東武亀戸線の位置づけの変化（路線の模式図・距離は縮尺どおりではありません）。①明治37年（1904年）の開業から明治43年（1910年）までは、東武の列車は亀戸から総武鉄道の線路に入って両国橋駅まで直通していました。②明治43年に浅草駅（初代）が開業すると直通は廃止され、亀戸線は曳舟〜亀戸間3.4kmの支線になりました。',
